@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menuHomeLoginItem"
+        android:title="@string/home.menu.login.title"/>
+
+    <item
+        android:id="@+id/menuHomeRegisterItem"
+        android:title="@string/home.menu.register.title"/>
+</menu>

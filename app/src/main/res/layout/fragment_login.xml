@@ -1,0 +1,51 @@
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:gravity="center_vertical"
+tools:context="fr.gobelins.crm14.workshop_android_crm14.home.fragments.LoginFragment">
+
+<android.support.design.widget.TextInputLayout
+    android:id="@+id/homeLoginEmailFieldLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/homeToolbar"
+    android:layout_centerHorizontal="true">
+
+    <EditText
+        android:id="@+id/homeLoginEmailField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/home.login.email.hint"
+        android:inputType="textEmailAddress" />
+
+</android.support.design.widget.TextInputLayout>
+
+<android.support.design.widget.TextInputLayout
+    android:id="@+id/homeLoginPasswordFieldLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/homeLoginEmailFieldLayout"
+    android:layout_centerHorizontal="true">
+
+    <EditText
+        android:id="@+id/homeLoginPasswordField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/home.login.password.hint"
+        android:inputType="textPassword" />
+
+</android.support.design.widget.TextInputLayout>
+
+<Button
+    android:id="@+id/homeLoginButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignEnd="@+id/homeLoginPasswordFieldLayout"
+    android:layout_below="@+id/homeLoginPasswordFieldLayout"
+    android:text="@string/home.login.button.text" />
+
+</RelativeLayout>

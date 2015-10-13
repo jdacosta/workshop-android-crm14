@@ -1,7 +1,9 @@
-package fr.gobelins.crm14.workshop_android_crm14;
+package fr.gobelins.crm14.workshop_android_crm14.home;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import fr.gobelins.crm14.workshop_android_crm14.R;
 
 public class HomeActivity extends AppCompatActivity {
 

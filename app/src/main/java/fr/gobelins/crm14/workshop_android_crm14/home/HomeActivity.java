@@ -3,6 +3,7 @@ package fr.gobelins.crm14.workshop_android_crm14.home;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -64,5 +65,10 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnF
                 .commit();
 
         getSupportActionBar().setTitle(R.string.R_string_home_toolbar_register_title);
+    }
+
+    @Override
+    public void onLogin() {
+        Log.d(TAG, "onLogin");
     }
 }

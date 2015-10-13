@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import fr.gobelins.crm14.workshop_android_crm14.R;
+import fr.gobelins.crm14.workshop_android_crm14.services.AuthService;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,18 +21,17 @@ import fr.gobelins.crm14.workshop_android_crm14.R;
  * {@link LoginFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment implements AuthService.LoginHandler {
 
     private static final String TAG = "LoginFragment";
     private OnFragmentInteractionListener mListener;
 
-    @Bind(R.id.homeLoginEmailField) TextView homeLoginEmailField;
-    @Bind(R.id.homeLoginPasswordField) TextView homeLoginPasswordField;
+    @Bind(R.id.homeLoginEmailField) TextView emailField;
+    @Bind(R.id.homeLoginPasswordField) TextView passwordField;
 
     public LoginFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,6 +62,21 @@ public class LoginFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
+    @OnClick(R.id.homeLoginButton)
+    public void onLoginButtonClick() {
+        AuthService.getInstance().authenticate(emailField.getText().toString(), passwordField.getText().toString(), this);
+    }
+
+    @Override
+    public void onLoginSuccess() {
+        mListener.onLogin();
+    }
+
+    @Override
+    public void onLoginFail(String error) {
+        // TODO: Create snack bar message
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -73,6 +88,7 @@ public class LoginFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
+        void onLogin();
     }
 
 }

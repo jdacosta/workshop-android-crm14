@@ -31,19 +31,19 @@ public class AuthService {
                 Log.d(TAG, "Auth success - email: " + email + " - password: " + password);
                 currentAuthData = authData;
                 currentUser = new User(email);
-                loginHandler.onSuccess();
+                loginHandler.onLoginSuccess();
             }
 
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
                 Log.d(TAG, "Auth error - email: " + email + " - password: " + password);
-                loginHandler.onFail(firebaseError.toString());
+                loginHandler.onLoginFail(firebaseError.toString());
             }
         });
     }
 
     public interface LoginHandler {
-        void onSuccess();
-        void onFail(String error);
+        void onLoginSuccess();
+        void onLoginFail(String error);
     }
 }

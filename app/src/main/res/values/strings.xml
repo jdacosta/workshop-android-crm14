@@ -10,4 +10,7 @@
     <string name="home.login.email.hint">Email</string>
     <string name="home.login.password.hint">Password</string>
     <string name="home.login.button.text">Login</string>
+    <string name="home.register.email.hint">Email</string>
+    <string name="home.register.password.hint">Password</string>
+    <string name="home.register.button.text">Register</string>
 </resources>

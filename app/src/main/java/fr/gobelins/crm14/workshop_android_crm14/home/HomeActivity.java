@@ -8,8 +8,10 @@ import android.view.MenuItem;
 
 import fr.gobelins.crm14.workshop_android_crm14.R;
 import fr.gobelins.crm14.workshop_android_crm14.home.fragments.LoginFragment;
+import fr.gobelins.crm14.workshop_android_crm14.home.fragments.RegisterFragment;
 
-public class HomeActivity extends AppCompatActivity implements LoginFragment.OnFragmentInteractionListener {
+public class HomeActivity extends AppCompatActivity implements LoginFragment.OnFragmentInteractionListener,
+        RegisterFragment.OnFragmentInteractionListener{
 
     private static final String TAG = "HomeActivity";
 
@@ -33,7 +35,7 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnF
             return true;
         }
         else if (item.getItemId() == R.id.menuHomeRegisterItem) {
-            //registerFragment();
+            registerFragment();
             return true;
         }
 
@@ -49,18 +51,18 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnF
     private void loginFragment() {
         getSupportFragmentManager()
             .beginTransaction()
-            .add(R.id.homeContainer, new LoginFragment())
+            .replace(R.id.homeContainer, new LoginFragment())
             .commit();
 
         getSupportActionBar().setTitle(R.string.R_string_home_toolbar_login_title);
     }
 
-    /*private void registerFragment() {
+    private void registerFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.homeContainer, new RegisterFragment())
+                .replace(R.id.homeContainer, new RegisterFragment())
                 .commit();
 
         getSupportActionBar().setTitle(R.string.R_string_home_toolbar_register_title);
-    }*/
+    }
 }

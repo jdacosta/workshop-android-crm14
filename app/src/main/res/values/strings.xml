@@ -7,6 +7,9 @@
     <string name="home.toolbar.login.title">Login</string>
     <string name="home.toolbar.register.title">Register</string>
 
+    <string name="home.progress.login.message">Signing in...</string>
+    <string name="home.progress.register.message">Creating your account...</string>
+
     <string name="home.login.email.hint">Email</string>
     <string name="home.login.password.hint">Password</string>
     <string name="home.login.button.text">Login</string>

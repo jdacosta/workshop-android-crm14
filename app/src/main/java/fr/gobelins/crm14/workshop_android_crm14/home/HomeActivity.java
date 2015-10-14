@@ -1,5 +1,6 @@
 package fr.gobelins.crm14.workshop_android_crm14.home;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,20 +19,27 @@ import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.authentication.AuthenticationEvent;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.register.RegisterEvent;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements LoginFragment.OnFragmentInteractionListener,
+        RegisterFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "HomeActivity";
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        // instantiate toolbar
+        // Instantiate toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.homeToolbar);
         setSupportActionBar(toolbar);
 
-        // instantiate login fragment
+        // Instantiate progress dialog
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(true);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
+        // Load login fragment
         loadLoginFragment();
     }
 
@@ -87,6 +95,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Subscribe
     public void onUserAuthenticate(AuthenticationEvent event) {
+        progressDialog.hide();
         if (!event.hasError()) {
             Log.d(TAG, "onLogin SUCCESS !!!");
             Intent dashboardIntent = new Intent(this, DashboardActivity.class);
@@ -96,10 +105,22 @@ public class HomeActivity extends AppCompatActivity {
 
     @Subscribe
     public void onUserRegister(RegisterEvent event) {
+        progressDialog.hide();
         if (!event.hasError()) {
             Log.d(TAG, "onRegister SUCCESS !!!");
             loadLoginFragment();
         }
     }
 
+    @Override
+    public void onLoginStart() {
+        progressDialog.setMessage(getString(R.string.home_progress_login_message));
+        progressDialog.show();
+    }
+
+    @Override
+    public void onRegisterStart() {
+        progressDialog.setMessage(getString(R.string.home_progress_register_message));
+        progressDialog.show();
+    }
 }

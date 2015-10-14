@@ -1,5 +1,6 @@
 package fr.gobelins.crm14.workshop_android_crm14.home.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -28,7 +29,7 @@ import fr.gobelins.crm14.workshop_android_crm14.services.auth.authentication.Aut
 public class LoginFragment extends Fragment {
 
     private static final String TAG = "LoginFragment";
-//    private OnFragmentInteractionListener mListener;
+    private OnFragmentInteractionListener mListener;
 
     @Bind(R.id.homeLoginEmailField) TextView emailField;
     @Bind(R.id.homeLoginPasswordField) TextView passwordField;
@@ -50,6 +51,17 @@ public class LoginFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (OnFragmentInteractionListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         BusProvider.getInstance().unregister(this);
@@ -58,6 +70,7 @@ public class LoginFragment extends Fragment {
 
     @OnClick(R.id.homeLoginButton)
     public void onLoginButtonClick() {
+        mListener.onLoginStart();
         AuthService.getInstance()
                 .authenticate(
                         emailField.getText().toString(),
@@ -70,5 +83,9 @@ public class LoginFragment extends Fragment {
             Snackbar.make(getView(), event.getMessage(), Snackbar.LENGTH_LONG)
                     .show();
         }
+    }
+
+    public interface OnFragmentInteractionListener {
+        void onLoginStart();
     }
 }

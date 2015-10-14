@@ -1,5 +1,6 @@
 package fr.gobelins.crm14.workshop_android_crm14.home.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,7 @@ import fr.gobelins.crm14.workshop_android_crm14.services.auth.register.RegisterE
 public class RegisterFragment extends Fragment {
 
     private static final String TAG = "RegisterFragment";
+    private OnFragmentInteractionListener mListener;
 
     @Bind(R.id.homeRegisterEmailField) TextView emailField;
     @Bind(R.id.homeRegisterUsernameField) TextView usernameField;
@@ -50,6 +52,17 @@ public class RegisterFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (OnFragmentInteractionListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         ButterKnife.unbind(this);
@@ -58,6 +71,7 @@ public class RegisterFragment extends Fragment {
 
     @OnClick(R.id.homeRegisterButton)
     public void onRegisterButtonClick() {
+        mListener.onRegisterStart();
         AuthService.getInstance()
                 .register(
                         emailField.getText().toString(),
@@ -71,5 +85,9 @@ public class RegisterFragment extends Fragment {
             Snackbar.make(getView(), event.getMessage(), Snackbar.LENGTH_LONG)
                     .show();
         }
+    }
+
+    public interface OnFragmentInteractionListener {
+        void onRegisterStart();
     }
 }

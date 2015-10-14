@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">workshop-android-crm14</string>
+    <string name="app_name">CipherWire</string>
 
     <string name="home.menu.login.title">Login</string>
     <string name="home.menu.register.title">Register</string>

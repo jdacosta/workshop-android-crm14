@@ -7,19 +7,10 @@ import com.firebase.client.AuthData;
  */
 public class User {
     private String uid;
-    private String email;
     private String username;
 
     public User(String uid) {
         this.uid = uid;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getUsername() {

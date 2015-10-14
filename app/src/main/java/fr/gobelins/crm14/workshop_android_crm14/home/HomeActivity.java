@@ -8,13 +8,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.squareup.otto.Subscribe;
+
 import fr.gobelins.crm14.workshop_android_crm14.R;
 import fr.gobelins.crm14.workshop_android_crm14.dashboard.DashboardActivity;
 import fr.gobelins.crm14.workshop_android_crm14.home.fragments.LoginFragment;
 import fr.gobelins.crm14.workshop_android_crm14.home.fragments.RegisterFragment;
+import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthEvent;
 
-public class HomeActivity extends AppCompatActivity implements LoginFragment.OnFragmentInteractionListener,
-        RegisterFragment.OnFragmentInteractionListener{
+public class HomeActivity extends AppCompatActivity implements RegisterFragment.OnFragmentInteractionListener{
 
     private static final String TAG = "HomeActivity";
 
@@ -28,17 +31,17 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnF
         setSupportActionBar(toolbar);
 
         // instantiate login fragment
-        loginFragment();
+        loadLoginFragment();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menuHomeLoginItem) {
-            loginFragment();
+            loadLoginFragment();
             return true;
         }
         else if (item.getItemId() == R.id.menuHomeRegisterItem) {
-            registerFragment();
+            loadRegisterFragment();
             return true;
         }
 
@@ -51,7 +54,19 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnF
         return true;
     }
 
-    private void loginFragment() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    protected void onPause() {
+        BusProvider.getInstance().unregister(this);
+        super.onPause();
+    }
+
+    private void loadLoginFragment() {
         getSupportFragmentManager()
             .beginTransaction()
             .replace(R.id.homeContainer, new LoginFragment())
@@ -60,7 +75,7 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnF
         getSupportActionBar().setTitle(R.string.home_toolbar_login_title);
     }
 
-    private void registerFragment() {
+    private void loadRegisterFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.homeContainer, new RegisterFragment())
@@ -69,10 +84,18 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnF
         getSupportActionBar().setTitle(R.string.home_toolbar_register_title);
     }
 
+    @Subscribe
+    public void onUserAuthenticate(AuthEvent event) {
+        if (!event.hasError()) {
+            Log.d(TAG, "onLogin SUCCESS !!!");
+            Intent dashboardIntent = new Intent(this, DashboardActivity.class);
+            startActivity(dashboardIntent);
+        }
+    }
+
     @Override
-    public void onLogin() {
-        Log.d(TAG, "onLogin");
-        Intent dashboardIntent = new Intent(this, DashboardActivity.class);
-        startActivity(dashboardIntent);
+    public void onRegister() {
+        Log.d(TAG, "onRegister SUCCESS !!!");
+        loadLoginFragment();
     }
 }

@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import fr.gobelins.crm14.workshop_android_crm14.R;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthService;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,7 +21,7 @@ import fr.gobelins.crm14.workshop_android_crm14.R;
  * {@link RegisterFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class RegisterFragment extends Fragment {
+public class RegisterFragment extends Fragment implements AuthService.RegisterHandler {
 
     private static final String TAG = "RegisterFragment";
     private OnFragmentInteractionListener mListener;
@@ -32,7 +33,6 @@ public class RegisterFragment extends Fragment {
     public RegisterFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,17 +63,28 @@ public class RegisterFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    @OnClick(R.id.homeRegisterButton)
+    public void onRegisterButtonClick() {
+        AuthService.getInstance()
+                .register(
+                        emailField.getText().toString(),
+                        usernameField.getText().toString(),
+                        passwordField.getText().toString(),
+                        this);
+    }
+
+    @Override
+    public void onRegisterSuccess() {
+        mListener.onRegister();
+    }
+
+    @Override
+    public void onRegisterFail(String error) {
+        // TODO: Create snack bar message
+    }
+
     public interface OnFragmentInteractionListener {
+        void onRegister();
     }
 
 }

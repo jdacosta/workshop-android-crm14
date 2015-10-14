@@ -18,4 +18,7 @@
     <string name="home.register.username.hint">Public username</string>
     <string name="home.register.password.hint">Password</string>
     <string name="home.register.button.text">Register</string>
+
+    <string name="dashboard.menu.profile.title">Profile</string>
+    <string name="dashboard.menu.logout.title">Logout</string>
 </resources>

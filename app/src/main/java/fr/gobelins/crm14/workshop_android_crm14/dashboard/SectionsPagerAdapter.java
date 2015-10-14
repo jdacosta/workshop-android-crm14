@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[] { "Dashboard", "Inbox", "Contact" };
+    private String tabTitles[] = new String[] { "Inbox", "Contact", "Profile" };
 
     public SectionsPagerAdapter(FragmentManager fm) {
         super(fm);

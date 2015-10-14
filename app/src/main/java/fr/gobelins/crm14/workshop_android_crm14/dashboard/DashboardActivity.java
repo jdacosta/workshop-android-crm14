@@ -12,14 +12,14 @@ import android.view.MenuItem;
 import com.squareup.otto.Subscribe;
 
 import fr.gobelins.crm14.workshop_android_crm14.R;
-import fr.gobelins.crm14.workshop_android_crm14.dashboard.fragments.DashboardFragment;
 import fr.gobelins.crm14.workshop_android_crm14.home.HomeActivity;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthService;
 import fr.gobelins.crm14.workshop_android_crm14.message.fragments.InboxFragment;
 import fr.gobelins.crm14.workshop_android_crm14.user.User;
 import fr.gobelins.crm14.workshop_android_crm14.user.fragments.ContactFragment;
+import fr.gobelins.crm14.workshop_android_crm14.user.fragments.ProfileFragment;
 
-public class DashboardActivity extends AppCompatActivity implements DashboardFragment.OnFragmentInteractionListener,
+public class DashboardActivity extends AppCompatActivity implements ProfileFragment.OnFragmentInteractionListener,
         ContactFragment.OnFragmentInteractionListener, InboxFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "DashboardActivity";
@@ -52,7 +52,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardFra
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menuDashboardProfileItem) {
+        if (item.getItemId() == R.id.menuDashboardSettingsItem) {
             return true;
         }
         else if (item.getItemId() == R.id.menuDashboardLogoutItem) {

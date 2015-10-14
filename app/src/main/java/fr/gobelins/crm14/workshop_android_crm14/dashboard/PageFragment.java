@@ -4,9 +4,9 @@ package fr.gobelins.crm14.workshop_android_crm14.dashboard;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import fr.gobelins.crm14.workshop_android_crm14.dashboard.fragments.DashboardFragment;
 import fr.gobelins.crm14.workshop_android_crm14.message.fragments.InboxFragment;
 import fr.gobelins.crm14.workshop_android_crm14.user.fragments.ContactFragment;
+import fr.gobelins.crm14.workshop_android_crm14.user.fragments.ProfileFragment;
 
 public class PageFragment extends Fragment {
 
@@ -20,17 +20,17 @@ public class PageFragment extends Fragment {
 
         // dashboard fragment
         if (page == 1) {
-            fragment = new DashboardFragment();
+            fragment = new InboxFragment();
         }
 
         // inbox fragment
         else if (page == 2) {
-            fragment = new InboxFragment();
+            fragment = new ContactFragment();
         }
 
         // contact fragment
         else {
-            fragment = new ContactFragment();
+            fragment = new ProfileFragment();
         }
 
         fragment.setArguments(args);

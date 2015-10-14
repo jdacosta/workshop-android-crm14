@@ -5,12 +5,13 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="R.string.home.toolbar.login.title">Login</string>
-    <string name="R.string.home.toolbar.register.title">Register</string>
+    <string name="home.toolbar.login.title">Login</string>
+    <string name="home.toolbar.register.title">Register</string>
     <string name="home.login.email.hint">Email</string>
     <string name="home.login.password.hint">Password</string>
     <string name="home.login.button.text">Login</string>
     <string name="home.register.email.hint">Email</string>
     <string name="home.register.password.hint">Password</string>
     <string name="home.register.button.text">Register</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

@@ -57,7 +57,7 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnF
             .replace(R.id.homeContainer, new LoginFragment())
             .commit();
 
-        getSupportActionBar().setTitle(R.string.R_string_home_toolbar_login_title);
+        getSupportActionBar().setTitle(R.string.home_toolbar_login_title);
     }
 
     private void registerFragment() {
@@ -66,7 +66,7 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnF
                 .replace(R.id.homeContainer, new RegisterFragment())
                 .commit();
 
-        getSupportActionBar().setTitle(R.string.R_string_home_toolbar_register_title);
+        getSupportActionBar().setTitle(R.string.home_toolbar_register_title);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package fr.gobelins.crm14.workshop_android_crm14.home;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -8,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import fr.gobelins.crm14.workshop_android_crm14.R;
+import fr.gobelins.crm14.workshop_android_crm14.dashboard.DashboardActivity;
 import fr.gobelins.crm14.workshop_android_crm14.home.fragments.LoginFragment;
 import fr.gobelins.crm14.workshop_android_crm14.home.fragments.RegisterFragment;
 
@@ -70,5 +72,7 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnF
     @Override
     public void onLogin() {
         Log.d(TAG, "onLogin");
+        Intent dashboardIntent = new Intent(this, DashboardActivity.class);
+        startActivity(dashboardIntent);
     }
 }

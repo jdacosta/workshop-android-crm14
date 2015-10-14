@@ -14,6 +14,7 @@ import fr.gobelins.crm14.workshop_android_crm14.user.User;
 public class AuthService {
     private static final String TAG = "AuthService";
     private static AuthService ourInstance = new AuthService();
+
     private User currentUser;
     private AuthData currentAuthData;
 
@@ -40,6 +41,22 @@ public class AuthService {
                 loginHandler.onLoginFail(firebaseError.toString());
             }
         });
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public AuthData getCurrentAuthData() {
+        return currentAuthData;
+    }
+
+    public void setCurrentAuthData(AuthData currentAuthData) {
+        this.currentAuthData = currentAuthData;
     }
 
     public interface LoginHandler {

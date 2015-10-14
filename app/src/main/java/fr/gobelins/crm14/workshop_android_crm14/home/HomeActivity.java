@@ -77,9 +77,9 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnF
 
     private void loadLoginFragment() {
         getSupportFragmentManager()
-            .beginTransaction()
-            .replace(R.id.homeContainer, new LoginFragment())
-            .commit();
+                .beginTransaction()
+                .replace(R.id.homeContainer, new LoginFragment())
+                .commit();
 
         getSupportActionBar().setTitle(R.string.home_toolbar_login_title);
     }

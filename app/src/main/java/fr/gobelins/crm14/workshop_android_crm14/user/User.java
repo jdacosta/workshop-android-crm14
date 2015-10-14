@@ -9,8 +9,7 @@ public class User {
     private String uid;
     private String username;
 
-    public User(String uid) {
-        this.uid = uid;
+    public User() {
     }
 
     public String getUsername() {

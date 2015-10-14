@@ -1,4 +1,4 @@
-package fr.gobelins.crm14.workshop_android_crm14.services.auth;
+package fr.gobelins.crm14.workshop_android_crm14.services.auth.authentication;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.FirebaseError;
@@ -53,7 +53,7 @@ public class AuthenticationEvent {
         return mHasError;
     }
 
-    public AuthData getmAuthData() {
+    public AuthData getAuthData() {
         return mAuthData;
     }
 }

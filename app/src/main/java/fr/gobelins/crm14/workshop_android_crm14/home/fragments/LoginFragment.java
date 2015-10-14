@@ -17,7 +17,7 @@ import butterknife.OnClick;
 import fr.gobelins.crm14.workshop_android_crm14.R;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthService;
 import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
-import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthenticationEvent;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.authentication.AuthenticationEvent;
 
 /**
  * A simple {@link Fragment} subclass.

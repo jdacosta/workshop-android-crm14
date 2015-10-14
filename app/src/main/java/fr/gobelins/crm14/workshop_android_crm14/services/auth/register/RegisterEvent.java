@@ -1,4 +1,4 @@
-package fr.gobelins.crm14.workshop_android_crm14.services.auth;
+package fr.gobelins.crm14.workshop_android_crm14.services.auth.register;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.FirebaseError;
@@ -12,6 +12,7 @@ public class RegisterEvent {
     private final String mDetails;
     private final String mMessage;
     private final String mUid;
+    private final String mUsername;
 
     public RegisterEvent() {
         mHasError = false;
@@ -19,6 +20,7 @@ public class RegisterEvent {
         mDetails = null;
         mMessage = null;
         mUid = null;
+        mUsername = null;
     }
 
     public RegisterEvent(FirebaseError firebaseError) {
@@ -27,14 +29,20 @@ public class RegisterEvent {
         mDetails = firebaseError.getDetails();
         mMessage = firebaseError.getMessage();
         mUid = null;
+        mUsername = null;
     }
 
-    public RegisterEvent(String uid) {
+    public RegisterEvent(String uid, String username) {
         mHasError = false;
         mCode = 0;
         mDetails = null;
         mMessage = null;
         mUid = uid;
+        mUsername = username;
+    }
+
+    public String getUsername() {
+        return mUsername;
     }
 
     public boolean hasError() {

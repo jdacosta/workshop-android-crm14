@@ -3,14 +3,16 @@ package fr.gobelins.crm14.workshop_android_crm14.services.auth;
 import android.util.Log;
 
 import com.firebase.client.AuthData;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
 import com.squareup.otto.Subscribe;
-
-import java.util.Map;
 
 import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
 import fr.gobelins.crm14.workshop_android_crm14.services.DatabaseService;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.authentication.AuthenticationEvent;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.authentication.AuthenticationHandler;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.register.RegisterHandler;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.saveUserData.SaveUserDataEvent;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.saveUserData.SaveUserDataHandler;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.register.RegisterEvent;
 import fr.gobelins.crm14.workshop_android_crm14.user.User;
 
 /**
@@ -34,31 +36,47 @@ public class AuthService {
     public void authenticate(final String email, final String password) {
         DatabaseService.getInstance()
                 .getFirebase()
-                .authWithPassword(email, password, new AuthWithPasswordHandler());
+                .authWithPassword(email, password, new AuthenticationHandler());
     }
 
     public void register(final String email, final String username, final String password) {
         DatabaseService.getInstance()
                 .getFirebase()
-                .createUser(email, password, new CreateUserHandler());
+                .createUser(email, password, new RegisterHandler(username));
+    }
+
+    public void saveUserData(String uid, User user) {
+        DatabaseService.getInstance()
+                .getFirebase()
+                .child("user")
+                .child(uid)
+                .setValue(user, new SaveUserDataHandler());
     }
 
     @Subscribe
-    public void onUserAuthenticate(AuthenticationEvent event) {
-        if (!event.hasError()){
+    public void onAuthenticate(AuthenticationEvent event) {
+        if (!event.hasError()) {
             Log.d(TAG, "Auth success");
-            currentAuthData = event.getmAuthData();
-            Log.d(TAG, "Auth data: " + currentAuthData.toString());
-            currentUser = new User(currentAuthData.getUid());
+            currentAuthData = event.getAuthData();
+            currentUser = new User();
         }
     }
 
     @Subscribe
-    public void onUserRegister(RegisterEvent event) {
+    public void onRegister(RegisterEvent event) {
         if (!event.hasError()){
             Log.d(TAG, "Register success");
-            String uid = event.getUid();
-            Log.d(TAG, "New user uid: " + uid);
+            Log.d(TAG, "New user uid: " + event.getUid());
+            User user = new User();
+            user.setUsername(event.getUsername());
+            saveUserData(event.getUid(), user);
+        }
+    }
+
+    @Subscribe
+    public void onSaveUserData(SaveUserDataEvent event) {
+        if (!event.hasError()){
+            Log.d(TAG, "Save user data success");
         }
     }
 
@@ -76,10 +94,5 @@ public class AuthService {
 
     public void setCurrentAuthData(AuthData currentAuthData) {
         this.currentAuthData = currentAuthData;
-    }
-
-    public interface RegisterHandler {
-        void onRegisterSuccess();
-        void onRegisterFail(String error);
     }
 }

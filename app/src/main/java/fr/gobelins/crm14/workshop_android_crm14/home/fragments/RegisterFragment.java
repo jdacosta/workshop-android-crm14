@@ -1,6 +1,5 @@
 package fr.gobelins.crm14.workshop_android_crm14.home.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -18,8 +17,7 @@ import butterknife.OnClick;
 import fr.gobelins.crm14.workshop_android_crm14.R;
 import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthService;
-import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthenticationEvent;
-import fr.gobelins.crm14.workshop_android_crm14.services.auth.RegisterEvent;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.register.RegisterEvent;
 
 /**
  * A simple {@link Fragment} subclass.

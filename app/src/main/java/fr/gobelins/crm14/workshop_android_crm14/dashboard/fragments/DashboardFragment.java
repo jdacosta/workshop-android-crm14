@@ -1,4 +1,4 @@
-package fr.gobelins.crm14.workshop_android_crm14.user.fragments;
+package fr.gobelins.crm14.workshop_android_crm14.dashboard.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,14 +12,14 @@ import fr.gobelins.crm14.workshop_android_crm14.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ContactFragment.OnFragmentInteractionListener} interface
+ * {@link DashboardFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class ContactFragment extends Fragment {
+public class DashboardFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public ContactFragment() {
+    public DashboardFragment() {
         // Required empty public constructor
     }
 
@@ -28,7 +28,7 @@ public class ContactFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contact, container, false);
+        return inflater.inflate(R.layout.fragment_dashboard, container, false);
     }
 
     @Override

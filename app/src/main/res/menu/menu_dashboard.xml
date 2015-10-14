@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menuDashboardProfileItem"
+        android:title="@string/dashboard.menu.profile.title"/>
+
+    <item
+        android:id="@+id/menuDashboardLogoutItem"
+        android:title="@string/dashboard.menu.logout.title"/>
+</menu>

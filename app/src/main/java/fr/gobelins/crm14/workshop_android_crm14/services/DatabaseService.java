@@ -26,12 +26,6 @@ public class DatabaseService {
         firebase = new Firebase("https://android-workshop.firebaseio.com/");
     }
 
-    public static void registerUser(final String email, final String password, final ValueResultHandler valueResultHandler) {
-        DatabaseService.getInstance()
-                .getFirebase()
-                .createUser(email, password, valueResultHandler);
-    }
-
     public Firebase getFirebase() {
         return firebase;
     }

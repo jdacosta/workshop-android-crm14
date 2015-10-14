@@ -6,35 +6,39 @@ import com.firebase.client.FirebaseError;
 /**
  * Created by risq on 10/14/15.
  */
-public class AuthEvent {
+public class RegisterEvent {
     private final boolean mHasError;
     private final int mCode;
     private final String mDetails;
     private final String mMessage;
-    private final AuthData mAuthData;
+    private final String mUid;
 
-    public AuthEvent() {
+    public RegisterEvent() {
         mHasError = false;
         mCode = 0;
         mDetails = null;
         mMessage = null;
-        mAuthData = null;
+        mUid = null;
     }
 
-    public AuthEvent(FirebaseError firebaseError) {
+    public RegisterEvent(FirebaseError firebaseError) {
         mHasError = true;
         mCode = firebaseError.getCode();
         mDetails = firebaseError.getDetails();
         mMessage = firebaseError.getMessage();
-        mAuthData = null;
+        mUid = null;
     }
 
-    public AuthEvent(AuthData authData) {
+    public RegisterEvent(String uid) {
         mHasError = false;
         mCode = 0;
         mDetails = null;
         mMessage = null;
-        mAuthData = authData;
+        mUid = uid;
+    }
+
+    public boolean hasError() {
+        return mHasError;
     }
 
     public int getCode() {
@@ -49,11 +53,7 @@ public class AuthEvent {
         return mMessage;
     }
 
-    public boolean hasError() {
-        return mHasError;
-    }
-
-    public AuthData getmAuthData() {
-        return mAuthData;
+    public String getUid() {
+        return mUid;
     }
 }

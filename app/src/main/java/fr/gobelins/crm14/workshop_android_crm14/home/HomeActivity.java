@@ -15,9 +15,10 @@ import fr.gobelins.crm14.workshop_android_crm14.dashboard.DashboardActivity;
 import fr.gobelins.crm14.workshop_android_crm14.home.fragments.LoginFragment;
 import fr.gobelins.crm14.workshop_android_crm14.home.fragments.RegisterFragment;
 import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
-import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthEvent;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthenticationEvent;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.RegisterEvent;
 
-public class HomeActivity extends AppCompatActivity implements RegisterFragment.OnFragmentInteractionListener{
+public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = "HomeActivity";
 
@@ -85,7 +86,7 @@ public class HomeActivity extends AppCompatActivity implements RegisterFragment.
     }
 
     @Subscribe
-    public void onUserAuthenticate(AuthEvent event) {
+    public void onUserAuthenticate(AuthenticationEvent event) {
         if (!event.hasError()) {
             Log.d(TAG, "onLogin SUCCESS !!!");
             Intent dashboardIntent = new Intent(this, DashboardActivity.class);
@@ -93,9 +94,12 @@ public class HomeActivity extends AppCompatActivity implements RegisterFragment.
         }
     }
 
-    @Override
-    public void onRegister() {
-        Log.d(TAG, "onRegister SUCCESS !!!");
-        loadLoginFragment();
+    @Subscribe
+    public void onUserRegister(RegisterEvent event) {
+        if (!event.hasError()) {
+            Log.d(TAG, "onRegister SUCCESS !!!");
+            loadLoginFragment();
+        }
     }
+
 }

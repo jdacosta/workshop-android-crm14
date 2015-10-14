@@ -17,7 +17,7 @@ import butterknife.OnClick;
 import fr.gobelins.crm14.workshop_android_crm14.R;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthService;
 import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
-import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthEvent;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthenticationEvent;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,21 +49,9 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        try {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-
     @Override
     public void onDetach() {
         super.onDetach();
-//        mListener = null;
         BusProvider.getInstance().unregister(this);
         ButterKnife.unbind(this);
     }
@@ -77,15 +65,10 @@ public class LoginFragment extends Fragment {
     }
 
     @Subscribe
-    public void onUserAuthenticate(AuthEvent event) {
+    public void onUserAuthenticate(AuthenticationEvent event) {
         if (event.hasError()) {
             Snackbar.make(getView(), event.getMessage(), Snackbar.LENGTH_LONG)
                     .show();
         }
     }
-
-//    public interface OnFragmentInteractionListener {
-//        void onLogin();
-//    }
-
 }

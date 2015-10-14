@@ -2,18 +2,24 @@ package fr.gobelins.crm14.workshop_android_crm14.home.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.squareup.otto.Subscribe;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import fr.gobelins.crm14.workshop_android_crm14.R;
+import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthService;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthenticationEvent;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.RegisterEvent;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,10 +27,9 @@ import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthService;
  * {@link RegisterFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class RegisterFragment extends Fragment implements AuthService.RegisterHandler {
+public class RegisterFragment extends Fragment {
 
     private static final String TAG = "RegisterFragment";
-    private OnFragmentInteractionListener mListener;
 
     @Bind(R.id.homeRegisterEmailField) TextView emailField;
     @Bind(R.id.homeRegisterUsernameField) TextView usernameField;
@@ -41,26 +46,16 @@ public class RegisterFragment extends Fragment implements AuthService.RegisterHa
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
         ButterKnife.bind(this, view);
+        BusProvider.getInstance().register(this);
 
         return view;
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            mListener = (OnFragmentInteractionListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
         ButterKnife.unbind(this);
+        BusProvider.getInstance().unregister(this);
     }
 
     @OnClick(R.id.homeRegisterButton)
@@ -69,22 +64,14 @@ public class RegisterFragment extends Fragment implements AuthService.RegisterHa
                 .register(
                         emailField.getText().toString(),
                         usernameField.getText().toString(),
-                        passwordField.getText().toString(),
-                        this);
+                        passwordField.getText().toString());
     }
 
-    @Override
-    public void onRegisterSuccess() {
-        mListener.onRegister();
+    @Subscribe
+    public void onUserRegister(RegisterEvent event) {
+        if (event.hasError()) {
+            Snackbar.make(getView(), event.getMessage(), Snackbar.LENGTH_LONG)
+                    .show();
+        }
     }
-
-    @Override
-    public void onRegisterFail(String error) {
-        // TODO: Create snack bar message
-    }
-
-    public interface OnFragmentInteractionListener {
-        void onRegister();
-    }
-
 }

@@ -6,10 +6,12 @@ import com.firebase.client.AuthData;
  * Created by risq on 10/13/15.
  */
 public class User {
+    private String uid;
     private String email;
+    private String username;
 
-    public User(String email) {
-        this.email = email;
+    public User(String uid) {
+        this.uid = uid;
     }
 
     public String getEmail() {
@@ -18,5 +20,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

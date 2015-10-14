@@ -25,8 +25,9 @@ public class RegisterFragment extends Fragment {
     private static final String TAG = "RegisterFragment";
     private OnFragmentInteractionListener mListener;
 
-    @Bind(R.id.homeRegisterEmailField) TextView homeRegisterEmailField;
-    @Bind(R.id.homeRegisterPasswordField) TextView homeRegisterPasswordField;
+    @Bind(R.id.homeRegisterEmailField) TextView emailField;
+    @Bind(R.id.homeRegisterUsernameField) TextView usernameField;
+    @Bind(R.id.homeRegisterPasswordField) TextView passwordField;
 
     public RegisterFragment() {
         // Required empty public constructor

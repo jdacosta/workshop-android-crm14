@@ -31,7 +31,7 @@ public class AuthService {
             public void onAuthenticated(AuthData authData) {
                 Log.d(TAG, "Auth success - email: " + email + " - password: " + password);
                 currentAuthData = authData;
-                currentUser = new User(email);
+                currentUser = new User(authData.getUid());
                 loginHandler.onLoginSuccess();
             }
 

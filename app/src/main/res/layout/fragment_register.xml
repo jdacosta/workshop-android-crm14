@@ -7,39 +7,56 @@ android:gravity="center_vertical"
 tools:context="fr.gobelins.crm14.workshop_android_crm14.home.fragments.RegisterFragment">
 
 
-<android.support.design.widget.TextInputLayout
-    android:id="@+id/homeRegisterEmailFieldLayout"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/homeToolbar"
-    android:layout_centerHorizontal="true">
-
-    <EditText
-        android:id="@+id/homeRegisterEmailField"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/homeRegisterEmailFieldLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/home.register.email.hint"
-        android:inputType="textEmailAddress" />
+        android:layout_below="@id/homeToolbar"
+        android:layout_centerHorizontal="true">
 
-</android.support.design.widget.TextInputLayout>
+        <EditText
+            android:id="@+id/homeRegisterEmailField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/home.register.email.hint"
+            android:inputType="textEmailAddress" />
 
-<android.support.design.widget.TextInputLayout
-    android:id="@+id/homeRegisterPasswordFieldLayout"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/homeRegisterEmailFieldLayout"
-    android:layout_centerHorizontal="true">
+    </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:id="@+id/homeRegisterPasswordField"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/homeRegisterUsernameFieldLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/home.register.password.hint"
-        android:inputType="textPassword" />
+        android:layout_below="@+id/homeRegisterEmailFieldLayout"
+        android:layout_centerHorizontal="true">
 
-</android.support.design.widget.TextInputLayout>
+        <EditText
+            android:id="@+id/homeRegisterUsernameField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/home.register.username.hint"
+            android:inputType="text" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/homeRegisterPasswordFieldLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/homeRegisterUsernameFieldLayout"
+        android:layout_centerHorizontal="true">
+
+        <EditText
+            android:id="@+id/homeRegisterPasswordField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/home.register.password.hint"
+            android:inputType="textPassword" />
+
+    </android.support.design.widget.TextInputLayout>
 
 <Button
     android:id="@+id/homeRegisterButton"

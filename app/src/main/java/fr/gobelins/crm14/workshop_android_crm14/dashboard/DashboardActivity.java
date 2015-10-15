@@ -68,7 +68,7 @@ public class DashboardActivity extends AppCompatActivity implements ProfileFragm
     }
 
     @Override
-    public void onAddContact() {
+    public void onAddContact(String username) {
         Log.d(TAG, "onAddContact");
     }
 }

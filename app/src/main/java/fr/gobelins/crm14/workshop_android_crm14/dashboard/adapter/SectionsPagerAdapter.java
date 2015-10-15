@@ -1,9 +1,11 @@
-package fr.gobelins.crm14.workshop_android_crm14.dashboard;
+package fr.gobelins.crm14.workshop_android_crm14.dashboard.adapter;
 
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import fr.gobelins.crm14.workshop_android_crm14.dashboard.fragment.PageFragment;
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 

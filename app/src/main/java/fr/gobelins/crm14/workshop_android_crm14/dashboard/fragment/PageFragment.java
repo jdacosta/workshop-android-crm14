@@ -1,4 +1,4 @@
-package fr.gobelins.crm14.workshop_android_crm14.dashboard;
+package fr.gobelins.crm14.workshop_android_crm14.dashboard.fragment;
 
 
 import android.os.Bundle;

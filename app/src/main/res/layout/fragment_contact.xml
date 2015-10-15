@@ -19,4 +19,11 @@
         fab:fab_colorPressed="@color/colorAccentLight"
         fab:fab_colorRipple="@color/white"
         android:src="@drawable/ic_add_24dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/contactRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
+
 </android.support.design.widget.CoordinatorLayout>

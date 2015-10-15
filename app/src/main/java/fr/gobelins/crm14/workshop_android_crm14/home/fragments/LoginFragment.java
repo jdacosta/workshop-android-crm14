@@ -66,6 +66,7 @@ public class LoginFragment extends Fragment {
         super.onDetach();
         BusProvider.getInstance().unregister(this);
         ButterKnife.unbind(this);
+        mListener = null;
     }
 
     @OnClick(R.id.homeLoginButton)

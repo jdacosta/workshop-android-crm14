@@ -67,6 +67,7 @@ public class RegisterFragment extends Fragment {
         super.onDetach();
         ButterKnife.unbind(this);
         BusProvider.getInstance().unregister(this);
+        mListener = null;
     }
 
     @OnClick(R.id.homeRegisterButton)

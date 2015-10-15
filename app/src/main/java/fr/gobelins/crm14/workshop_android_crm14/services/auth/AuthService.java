@@ -3,12 +3,16 @@ package fr.gobelins.crm14.workshop_android_crm14.services.auth;
 import android.util.Log;
 
 import com.firebase.client.AuthData;
+import com.firebase.client.Firebase;
+import com.squareup.otto.Produce;
 import com.squareup.otto.Subscribe;
 
 import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
 import fr.gobelins.crm14.workshop_android_crm14.services.DatabaseService;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.authentication.AuthenticationEvent;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.authentication.AuthenticationHandler;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.getUserData.GetUserDataEvent;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.getUserData.GetUserDataHandler;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.register.RegisterHandler;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.saveUserData.SaveUserDataEvent;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.saveUserData.SaveUserDataHandler;
@@ -53,12 +57,22 @@ public class AuthService {
                 .setValue(user, new SaveUserDataHandler());
     }
 
+    public void getUserData(String uid) {
+        DatabaseService.getInstance()
+                .getFirebase()
+                .child("user")
+                .child(uid)
+                .addValueEventListener(new GetUserDataHandler());
+    }
+
     @Subscribe
     public void onAuthenticate(AuthenticationEvent event) {
         if (!event.hasError()) {
             Log.d(TAG, "Auth success");
-            currentAuthData = event.getAuthData();
             currentUser = new User();
+            currentAuthData = event.getAuthData();
+            AuthService.getInstance()
+                    .getUserData(currentAuthData.getUid());
         }
     }
 
@@ -78,6 +92,19 @@ public class AuthService {
         if (!event.hasError()){
             Log.d(TAG, "Save user data success");
         }
+    }
+
+    @Subscribe
+    public void onGetUserData(GetUserDataEvent event) {
+        if (!event.hasError()) {
+            currentUser = event.getUser();
+            Log.d(TAG, "Get user data " + event.getUser().toString());
+        }
+    }
+
+    @Produce
+    public GetUserDataEvent produceGetUserData() {
+        return new GetUserDataEvent(this.currentUser);
     }
 
     public User getCurrentUser() {

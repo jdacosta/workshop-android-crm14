@@ -28,26 +28,19 @@ public class DashboardActivity extends AppCompatActivity implements ProfileFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        User currentUser = AuthService.getInstance().getCurrentUser();
+        setContentView(R.layout.activity_dashboard);
 
-        if (currentUser == null) {
-            Intent homeIntent = new Intent(this, HomeActivity.class);
-            startActivity(homeIntent);
-        } else {
-            setContentView(R.layout.activity_dashboard);
+        // instantiate toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.dashboardToolbar);
+        setSupportActionBar(toolbar);
 
-            // instantiate toolbar
-            Toolbar toolbar = (Toolbar) findViewById(R.id.dashboardToolbar);
-            setSupportActionBar(toolbar);
+        // instantiate viewpager
+        ViewPager viewPager = (ViewPager) findViewById(R.id.dashboardViewpager);
+        viewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
 
-            // instantiate viewpager
-            ViewPager viewPager = (ViewPager) findViewById(R.id.dashboardViewpager);
-            viewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
-
-            // instantiate tablayout
-            TabLayout tabLayout = (TabLayout) findViewById(R.id.dashboardTabs);
-            tabLayout.setupWithViewPager(viewPager);
-        }
+        // instantiate tablayout
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.dashboardTabs);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override

@@ -2,12 +2,24 @@ package fr.gobelins.crm14.workshop_android_crm14.user.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.squareup.otto.Subscribe;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import fr.gobelins.crm14.workshop_android_crm14.R;
+import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthService;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.authentication.AuthenticationEvent;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.getUserData.GetUserDataEvent;
+import fr.gobelins.crm14.workshop_android_crm14.user.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,18 +29,25 @@ import fr.gobelins.crm14.workshop_android_crm14.R;
  */
 public class ProfileFragment extends Fragment {
 
+    private static final String TAG = "ProfileFragment";
     private OnFragmentInteractionListener mListener;
+
+    @Bind(R.id.userProfileUsernameField) TextView usernameField;
 
     public ProfileFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        ButterKnife.bind(this, view);
+        BusProvider.getInstance().register(this);
+
+        return view;
     }
 
     @Override
@@ -43,21 +62,26 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroyView() {
+        super.onDestroyView();
+        BusProvider.getInstance().unregister(this);
+        ButterKnife.unbind(this);
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    private void updateUserData(User user) {
+        usernameField.setText(user.getUsername());
+    }
+
+    @Subscribe
+    public void onGetUserData(GetUserDataEvent event) {
+        Log.d(TAG, "onGetUserData");
+        if (!event.hasError()) {
+            updateUserData(event.getUser());
+            Log.d(TAG, "onGetUserData " + event.getUser().getUsername());
+        }
+    }
+
     public interface OnFragmentInteractionListener {
     }
 

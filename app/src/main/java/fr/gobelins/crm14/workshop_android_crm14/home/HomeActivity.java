@@ -16,6 +16,7 @@ import fr.gobelins.crm14.workshop_android_crm14.dashboard.DashboardActivity;
 import fr.gobelins.crm14.workshop_android_crm14.home.fragments.LoginFragment;
 import fr.gobelins.crm14.workshop_android_crm14.home.fragments.RegisterFragment;
 import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthService;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.authentication.AuthenticationEvent;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.register.RegisterEvent;
 

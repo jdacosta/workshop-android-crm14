@@ -10,7 +10,7 @@ import fr.gobelins.crm14.workshop_android_crm14.dashboard.fragment.PageFragment;
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[] { "Inbox", "Contact", "Profile" };
+    private String tabTitles[] = new String[] { "Inbox", "Contacts", "Profile" };
 
     public SectionsPagerAdapter(FragmentManager fm) {
         super(fm);

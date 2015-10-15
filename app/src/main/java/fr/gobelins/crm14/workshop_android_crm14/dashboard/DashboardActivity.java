@@ -3,9 +3,11 @@ package fr.gobelins.crm14.workshop_android_crm14.dashboard;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,9 +19,10 @@ import fr.gobelins.crm14.workshop_android_crm14.message.fragments.InboxFragment;
 import fr.gobelins.crm14.workshop_android_crm14.user.User;
 import fr.gobelins.crm14.workshop_android_crm14.user.fragments.ContactFragment;
 import fr.gobelins.crm14.workshop_android_crm14.user.fragments.ProfileFragment;
+import fr.gobelins.crm14.workshop_android_crm14.user.fragments.dialog.AddContactDialogFragment;
 
 public class DashboardActivity extends AppCompatActivity implements ProfileFragment.OnFragmentInteractionListener,
-        ContactFragment.OnFragmentInteractionListener, InboxFragment.OnFragmentInteractionListener {
+        ContactFragment.OnFragmentInteractionListener, InboxFragment.OnFragmentInteractionListener, AddContactDialogFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "DashboardActivity";
 
@@ -40,6 +43,8 @@ public class DashboardActivity extends AppCompatActivity implements ProfileFragm
         // instantiate tablayout
         TabLayout tabLayout = (TabLayout) findViewById(R.id.dashboardTabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        showAddContactDialog();
     }
 
     @Override
@@ -58,5 +63,16 @@ public class DashboardActivity extends AppCompatActivity implements ProfileFragm
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return true;
+    }
+
+    private void showAddContactDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        AddContactDialogFragment addContactDialogFragment = new AddContactDialogFragment();
+        addContactDialogFragment.show(fm, "fragment_add_contact");
+    }
+
+    @Override
+    public void onAddContact() {
+        Log.d(TAG, "onAddContact");
     }
 }

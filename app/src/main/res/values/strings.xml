@@ -22,6 +22,5 @@
     <string name="dashboard.menu.settings.title">Settings</string>
     <string name="dashboard.menu.logout.title">Logout</string>
 
-    <string name="user.contact.addcontact.button.text">Add</string>
-    <string name="user.contact.addcontact.username.hint">Add contact by username</string>
+    <string name="user.contact.add.username.hint">Contact username</string>
 </resources>

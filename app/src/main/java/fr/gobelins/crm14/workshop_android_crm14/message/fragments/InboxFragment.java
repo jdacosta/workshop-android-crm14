@@ -3,11 +3,16 @@ package fr.gobelins.crm14.workshop_android_crm14.message.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import fr.gobelins.crm14.workshop_android_crm14.R;
+import fr.gobelins.crm14.workshop_android_crm14.message.adapter.InboxAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,6 +23,10 @@ import fr.gobelins.crm14.workshop_android_crm14.R;
 public class InboxFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private ArrayList<String> mDatas = new ArrayList<>();
 
     public InboxFragment() {
         // Required empty public constructor
@@ -28,7 +37,22 @@ public class InboxFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_inbox, container, false);
+        View view = inflater.inflate(R.layout.fragment_inbox, container, false);
+
+        // Initial data
+        for (int i = 0; i < 100; i++) {
+            mDatas.add("Inbox " + i);
+        }
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.inboxRecyclerView);
+
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new InboxAdapter(mDatas);
+        mRecyclerView.setAdapter(mAdapter);
+
+        return view;
     }
 
     @Override
@@ -46,6 +70,9 @@ public class InboxFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        mRecyclerView = null;
+        mAdapter = null;
+        mLayoutManager = null;
     }
 
     /**

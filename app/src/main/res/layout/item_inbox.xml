@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="4dp">
+
+    <LinearLayout
+        android:id="@+id/inboxWrapperInbox"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:orientation="vertical"
+        android:background="@color/colorPrimaryDarker">
+
+        <TextView
+            tools:text="username"
+            android:id="@+id/messageInboxNameText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"/>
+    </LinearLayout>
+</FrameLayout>

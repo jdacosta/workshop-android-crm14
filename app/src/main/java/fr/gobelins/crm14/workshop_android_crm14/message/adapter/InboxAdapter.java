@@ -22,7 +22,7 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.ViewHolder> 
 
     @Override
     public InboxAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.inbox_message_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_inbox, parent, false);
 
         return new ViewHolder(view);
     }

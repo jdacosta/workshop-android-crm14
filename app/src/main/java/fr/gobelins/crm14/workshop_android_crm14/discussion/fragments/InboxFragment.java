@@ -1,4 +1,4 @@
-package fr.gobelins.crm14.workshop_android_crm14.message.fragments;
+package fr.gobelins.crm14.workshop_android_crm14.discussion.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import fr.gobelins.crm14.workshop_android_crm14.R;
-import fr.gobelins.crm14.workshop_android_crm14.message.adapter.InboxAdapter;
+import fr.gobelins.crm14.workshop_android_crm14.discussion.adapter.InboxAdapter;
 
 /**
  * A simple {@link Fragment} subclass.

@@ -1,4 +1,4 @@
-package fr.gobelins.crm14.workshop_android_crm14.message.adapter;
+package fr.gobelins.crm14.workshop_android_crm14.discussion.adapter;
 
 
 import android.support.v7.widget.RecyclerView;

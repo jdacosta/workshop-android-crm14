@@ -4,7 +4,7 @@ package fr.gobelins.crm14.workshop_android_crm14.dashboard.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import fr.gobelins.crm14.workshop_android_crm14.message.fragments.InboxFragment;
+import fr.gobelins.crm14.workshop_android_crm14.discussion.fragments.InboxFragment;
 import fr.gobelins.crm14.workshop_android_crm14.user.fragments.ContactFragment;
 import fr.gobelins.crm14.workshop_android_crm14.user.fragments.ProfileFragment;
 

@@ -6,7 +6,7 @@ import java.math.BigInteger;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 
-public class Generate {
+public class GenerateService {
 
     private static final int SALT_LENGTH = 256;
     private static final int PASSPHRASE_LENGTH = 512;

@@ -2,6 +2,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fr.gobelins.crm14.workshop_android_crm14.message.fragments.ComposeFragment">
+    tools:context="fr.gobelins.crm14.workshop_android_crm14.discussion.fragments.ComposeFragment">
 
 </FrameLayout>

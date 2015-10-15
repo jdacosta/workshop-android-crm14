@@ -12,7 +12,7 @@ import android.view.MenuItem;
 
 import fr.gobelins.crm14.workshop_android_crm14.R;
 import fr.gobelins.crm14.workshop_android_crm14.dashboard.adapter.SectionsPagerAdapter;
-import fr.gobelins.crm14.workshop_android_crm14.message.fragments.InboxFragment;
+import fr.gobelins.crm14.workshop_android_crm14.discussion.fragments.InboxFragment;
 import fr.gobelins.crm14.workshop_android_crm14.user.fragments.ContactFragment;
 import fr.gobelins.crm14.workshop_android_crm14.user.fragments.ProfileFragment;
 import fr.gobelins.crm14.workshop_android_crm14.user.fragments.dialog.AddContactDialogFragment;

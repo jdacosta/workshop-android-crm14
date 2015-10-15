@@ -1,6 +1,5 @@
 package fr.gobelins.crm14.workshop_android_crm14.dashboard;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -13,10 +12,7 @@ import android.view.MenuItem;
 
 import fr.gobelins.crm14.workshop_android_crm14.R;
 import fr.gobelins.crm14.workshop_android_crm14.dashboard.adapter.SectionsPagerAdapter;
-import fr.gobelins.crm14.workshop_android_crm14.home.HomeActivity;
-import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthService;
 import fr.gobelins.crm14.workshop_android_crm14.message.fragments.InboxFragment;
-import fr.gobelins.crm14.workshop_android_crm14.user.User;
 import fr.gobelins.crm14.workshop_android_crm14.user.fragments.ContactFragment;
 import fr.gobelins.crm14.workshop_android_crm14.user.fragments.ProfileFragment;
 import fr.gobelins.crm14.workshop_android_crm14.user.fragments.dialog.AddContactDialogFragment;

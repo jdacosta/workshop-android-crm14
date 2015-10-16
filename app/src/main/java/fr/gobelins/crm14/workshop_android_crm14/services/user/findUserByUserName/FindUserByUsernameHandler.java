@@ -14,9 +14,15 @@ import fr.gobelins.crm14.workshop_android_crm14.user.User;
  * Created by risq on 10/16/15.
  */
 public class FindUserByUsernameHandler implements ChildEventListener {
+    private int requestId;
+
+    public FindUserByUsernameHandler(int requestId) {
+        this.requestId = requestId;
+    }
+
     @Override
     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-        BusProvider.getInstance().post(new FindUserByUsernameEvent(dataSnapshot.getKey().toString()));
+        BusProvider.getInstance().post(new FindUserByUsernameEvent(dataSnapshot.getKey().toString(), requestId));
     }
 
     @Override
@@ -36,6 +42,6 @@ public class FindUserByUsernameHandler implements ChildEventListener {
 
     @Override
     public void onCancelled(FirebaseError firebaseError) {
-
+        BusProvider.getInstance().post(new FindUserByUsernameEvent(firebaseError, requestId));
     }
 }

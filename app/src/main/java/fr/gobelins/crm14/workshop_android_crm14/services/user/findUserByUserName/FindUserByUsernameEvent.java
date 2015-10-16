@@ -10,13 +10,15 @@ import fr.gobelins.crm14.workshop_android_crm14.user.User;
  * Created by risq on 10/16/15.
  */
 public class FindUserByUsernameEvent {
+    public static final int FIND_USER_TO_ADD_CONTACT = 0;
     private final boolean mHasError;
     private final int mCode;
     private final String mDetails;
     private final String mMessage;
     private final User mUser;
+    private final int mRequestId;
 
-    public FindUserByUsernameEvent(String userId) {
+    public FindUserByUsernameEvent(String userId, int requestId) {
         if (userId == null) {
             mHasError = true;
         } else {
@@ -26,14 +28,16 @@ public class FindUserByUsernameEvent {
         mDetails = null;
         mMessage = null;
         mUser = new User(userId);
+        mRequestId = requestId;
     }
 
-    public FindUserByUsernameEvent(FirebaseError firebaseError) {
+    public FindUserByUsernameEvent(FirebaseError firebaseError, int requestId) {
         mHasError = true;
         mCode = firebaseError.getCode();
         mDetails = firebaseError.getDetails();
         mMessage = firebaseError.getMessage();
         mUser = null;
+        mRequestId = requestId;
     }
 
     public int getCode() {
@@ -55,4 +59,6 @@ public class FindUserByUsernameEvent {
     public User getUser() {
         return mUser;
     }
+
+    public int getRequestId() { return mRequestId; }
 }

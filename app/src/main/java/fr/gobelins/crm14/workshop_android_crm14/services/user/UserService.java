@@ -63,13 +63,13 @@ public class UserService {
                 .addValueEventListener(new GetUserDataHandler());
     }
 
-    public void findUserByUsername(String username) {
+    public void addContactByUsername(String contactUsername) {
         DatabaseService.getInstance()
                 .getFirebase()
                 .child("user")
                 .orderByChild("username")
-                .equalTo(username)
-                .addChildEventListener(new FindUserByUsernameHandler());
+                .equalTo(contactUsername)
+                .addChildEventListener(new FindUserByUsernameHandler(FindUserByUsernameEvent.FIND_USER_TO_ADD_CONTACT));
     }
 
     private void addContactToCurrentUser(User contact) {
@@ -83,10 +83,6 @@ public class UserService {
                 .child("contacts")
                 .child(contact.getUid())
                 .setValue(true);
-    }
-
-    public void addContactByContactUsername(String contactUsername) {
-
     }
 
     @Subscribe
@@ -111,7 +107,10 @@ public class UserService {
     public void onFindUserByUsername(FindUserByUsernameEvent event) {
         if (!event.hasError()) {
             Log.d(TAG, "Find user by username success: " + event.getUser().toString());
-//            addContactToCurrentUser(event.getUser());
+            if (event.getRequestId() == FindUserByUsernameEvent.FIND_USER_TO_ADD_CONTACT) {
+                Log.d(TAG, "Adding found user to contacts: " + event.getUser().toString());
+                addContactToCurrentUser(event.getUser());
+            }
         } else {
             Log.d(TAG, "Error finding user by username: " + event.getCode() + " - " + event.getMessage());
         }

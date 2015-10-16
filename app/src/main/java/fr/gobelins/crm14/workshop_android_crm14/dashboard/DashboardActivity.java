@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import fr.gobelins.crm14.workshop_android_crm14.R;
 import fr.gobelins.crm14.workshop_android_crm14.dashboard.adapter.SectionsPagerAdapter;
 import fr.gobelins.crm14.workshop_android_crm14.discussion.fragments.InboxFragment;
+import fr.gobelins.crm14.workshop_android_crm14.services.user.UserService;
 import fr.gobelins.crm14.workshop_android_crm14.user.fragments.ContactFragment;
 import fr.gobelins.crm14.workshop_android_crm14.user.fragments.ProfileFragment;
 import fr.gobelins.crm14.workshop_android_crm14.user.fragments.dialog.AddContactDialogFragment;
@@ -73,5 +74,7 @@ public class DashboardActivity extends AppCompatActivity implements ProfileFragm
     @Override
     public void onAddContact(String username) {
         Log.d(TAG, "Add contact " + username);
+        UserService.getInstance()
+                .addContactByUsername(username);
     }
 }

@@ -10,7 +10,7 @@ public class Preferences {
     public static final String RSA_PRIVATE_KEY = "RSA_PRIVATE_KEY";
     public static SharedPreferences mPreferences;
 
-    public static void init(Context context) {
+    public static void setContext(Context context) {
         mPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
     }
 

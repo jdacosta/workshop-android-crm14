@@ -1,4 +1,4 @@
-package fr.gobelins.crm14.workshop_android_crm14.services.auth.saveUserData;
+package fr.gobelins.crm14.workshop_android_crm14.services.user.saveUserData;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;

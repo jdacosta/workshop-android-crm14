@@ -1,29 +1,37 @@
-package fr.gobelins.crm14.workshop_android_crm14.services.auth.saveUserData;
+package fr.gobelins.crm14.workshop_android_crm14.services.user.getCurrentUserData;
 
 import com.firebase.client.FirebaseError;
+
+import fr.gobelins.crm14.workshop_android_crm14.user.User;
 
 /**
  * Created by risq on 10/14/15.
  */
-public class SaveUserDataEvent {
-
+public class GetCurrentUserDataEvent {
     private final boolean mHasError;
     private final int mCode;
     private final String mDetails;
     private final String mMessage;
+    private final User mUser;
 
-    public SaveUserDataEvent() {
-        mHasError = false;
+    public GetCurrentUserDataEvent(User user) {
+        if (user == null) {
+            mHasError = true;
+        } else {
+            mHasError = false;
+        }
         mCode = 0;
         mDetails = null;
         mMessage = null;
+        mUser = user;
     }
 
-    public SaveUserDataEvent(FirebaseError firebaseError) {
+    public GetCurrentUserDataEvent(FirebaseError firebaseError) {
         mHasError = true;
         mCode = firebaseError.getCode();
         mDetails = firebaseError.getDetails();
         mMessage = firebaseError.getMessage();
+        mUser = null;
     }
 
     public int getCode() {
@@ -41,4 +49,9 @@ public class SaveUserDataEvent {
     public boolean hasError() {
         return mHasError;
     }
+
+    public User getUser() {
+        return mUser;
+    }
+
 }

@@ -2,7 +2,6 @@ package fr.gobelins.crm14.workshop_android_crm14.user.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,9 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import fr.gobelins.crm14.workshop_android_crm14.R;
 import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
-import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthService;
-import fr.gobelins.crm14.workshop_android_crm14.services.auth.authentication.AuthenticationEvent;
-import fr.gobelins.crm14.workshop_android_crm14.services.auth.getUserData.GetUserDataEvent;
+import fr.gobelins.crm14.workshop_android_crm14.services.user.getCurrentUserData.GetCurrentUserDataEvent;
 import fr.gobelins.crm14.workshop_android_crm14.user.User;
 
 /**
@@ -74,7 +71,7 @@ public class ProfileFragment extends Fragment {
     }
 
     @Subscribe
-    public void onGetUserData(GetUserDataEvent event) {
+    public void onGetUserData(GetCurrentUserDataEvent event) {
         Log.d(TAG, "onGetUserData");
         if (!event.hasError()) {
             updateUserData(event.getUser());

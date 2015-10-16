@@ -3,7 +3,6 @@ package fr.gobelins.crm14.workshop_android_crm14.services.auth;
 import android.util.Log;
 
 import com.firebase.client.AuthData;
-import com.firebase.client.Firebase;
 import com.squareup.otto.Produce;
 import com.squareup.otto.Subscribe;
 
@@ -11,11 +10,9 @@ import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
 import fr.gobelins.crm14.workshop_android_crm14.services.DatabaseService;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.authentication.AuthenticationEvent;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.authentication.AuthenticationHandler;
-import fr.gobelins.crm14.workshop_android_crm14.services.auth.getUserData.GetUserDataEvent;
-import fr.gobelins.crm14.workshop_android_crm14.services.auth.getUserData.GetUserDataHandler;
+import fr.gobelins.crm14.workshop_android_crm14.services.user.UserService;
+import fr.gobelins.crm14.workshop_android_crm14.services.user.getCurrentUserData.GetCurrentUserDataEvent;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.register.RegisterHandler;
-import fr.gobelins.crm14.workshop_android_crm14.services.auth.saveUserData.SaveUserDataEvent;
-import fr.gobelins.crm14.workshop_android_crm14.services.auth.saveUserData.SaveUserDataHandler;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.register.RegisterEvent;
 import fr.gobelins.crm14.workshop_android_crm14.user.User;
 
@@ -49,30 +46,14 @@ public class AuthService {
                 .createUser(email, password, new RegisterHandler(username));
     }
 
-    public void saveUserData(User user) {
-        DatabaseService.getInstance()
-                .getFirebase()
-                .child("user")
-                .child(user.getUid())
-                .setValue(user, new SaveUserDataHandler());
-    }
-
-    public void getUserData(User user) {
-        DatabaseService.getInstance()
-                .getFirebase()
-                .child("user")
-                .child(user.getUid())
-                .addValueEventListener(new GetUserDataHandler());
-    }
-
     @Subscribe
     public void onAuthenticate(AuthenticationEvent event) {
         if (!event.hasError()) {
             Log.d(TAG, "Auth success");
             currentUser = new User(event.getAuthData().getUid());
             currentAuthData = event.getAuthData();
-            AuthService.getInstance()
-                    .getUserData(currentUser);
+            UserService.getInstance()
+                    .getCurrentUserData();
         }
     }
 
@@ -83,19 +64,13 @@ public class AuthService {
             Log.d(TAG, "New user uid: " + event.getUid());
             User user = new User(event.getUid());
             user.setUsername(event.getUsername());
-            saveUserData(user);
+            UserService.getInstance()
+                    .saveUserData(user);
         }
     }
 
     @Subscribe
-    public void onSaveUserData(SaveUserDataEvent event) {
-        if (!event.hasError()){
-            Log.d(TAG, "Save user data success");
-        }
-    }
-
-    @Subscribe
-    public void onGetUserData(GetUserDataEvent event) {
+    public void onGetCurrentUserData(GetCurrentUserDataEvent event) {
         if (!event.hasError()) {
             currentUser = event.getUser();
             currentUser.setUid(currentAuthData.getUid());
@@ -104,8 +79,8 @@ public class AuthService {
     }
 
     @Produce
-    public GetUserDataEvent produceGetUserData() {
-        return new GetUserDataEvent(this.currentUser);
+    public GetCurrentUserDataEvent produceGetUserData() {
+        return new GetCurrentUserDataEvent(this.currentUser);
     }
 
     public User getCurrentUser() {

@@ -2,11 +2,18 @@ package fr.gobelins.crm14.workshop_android_crm14.services.user;
 
 import android.util.Log;
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.squareup.otto.Produce;
 import com.squareup.otto.Subscribe;
 
+import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
 import fr.gobelins.crm14.workshop_android_crm14.services.DatabaseService;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthService;
+import fr.gobelins.crm14.workshop_android_crm14.services.user.findUserByUserName.FindUserByUsernameEvent;
+import fr.gobelins.crm14.workshop_android_crm14.services.user.findUserByUserName.FindUserByUsernameHandler;
 import fr.gobelins.crm14.workshop_android_crm14.services.user.getCurrentUserData.GetCurrentUserDataEvent;
 import fr.gobelins.crm14.workshop_android_crm14.services.user.getCurrentUserData.GetCurrentUserDataHandler;
 import fr.gobelins.crm14.workshop_android_crm14.services.user.getUserData.GetUserDataEvent;
@@ -27,6 +34,7 @@ public class UserService {
     }
 
     private UserService() {
+        BusProvider.getInstance().register(this);
     }
 
     public void saveUserData(User user) {
@@ -55,12 +63,38 @@ public class UserService {
                 .addValueEventListener(new GetUserDataHandler());
     }
 
+    public void findUserByUsername(String username) {
+        DatabaseService.getInstance()
+                .getFirebase()
+                .child("user")
+                .orderByChild("username")
+                .equalTo(username)
+                .addChildEventListener(new FindUserByUsernameHandler());
+    }
+
+    private void addContactToCurrentUser(User contact) {
+        User user = AuthService.getInstance()
+                .getCurrentUser();
+
+        DatabaseService.getInstance()
+                .getFirebase()
+                .child("user")
+                .child(user.getUid())
+                .child("contacts")
+                .child(contact.getUid())
+                .setValue(true);
+    }
+
+    public void addContactByContactUsername(String contactUsername) {
+
+    }
+
     @Subscribe
     public void onSaveUserData(SaveUserDataEvent event) {
-        if (!event.hasError()){
+        if (!event.hasError()) {
             Log.d(TAG, "Save user data success");
         } else {
-            Log.d(TAG, "Error saving user data success: " + event.getCode() + " - " + event.getMessage());
+            Log.d(TAG, "Error saving user data: " + event.getCode() + " - " + event.getMessage());
         }
     }
 
@@ -69,7 +103,17 @@ public class UserService {
         if (!event.hasError()) {
             Log.d(TAG, "Get user data success: " + event.getUser().toString());
         } else {
-            Log.d(TAG, "Error saving user data success: " + event.getCode() + " - " + event.getMessage());
+            Log.d(TAG, "Error saving user data: " + event.getCode() + " - " + event.getMessage());
+        }
+    }
+
+    @Subscribe
+    public void onFindUserByUsername(FindUserByUsernameEvent event) {
+        if (!event.hasError()) {
+            Log.d(TAG, "Find user by username success: " + event.getUser().toString());
+//            addContactToCurrentUser(event.getUser());
+        } else {
+            Log.d(TAG, "Error finding user by username: " + event.getCode() + " - " + event.getMessage());
         }
     }
 }

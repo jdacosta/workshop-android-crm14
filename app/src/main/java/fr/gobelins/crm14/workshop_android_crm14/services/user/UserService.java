@@ -59,13 +59,17 @@ public class UserService {
     public void onSaveUserData(SaveUserDataEvent event) {
         if (!event.hasError()){
             Log.d(TAG, "Save user data success");
+        } else {
+            Log.d(TAG, "Error saving user data success: " + event.getCode() + " - " + event.getMessage());
         }
     }
 
     @Subscribe
     public void onGetUserData(GetUserDataEvent event) {
         if (!event.hasError()) {
-            Log.d(TAG, "Get user data success");
+            Log.d(TAG, "Get user data success: " + event.getUser().toString());
+        } else {
+            Log.d(TAG, "Error saving user data success: " + event.getCode() + " - " + event.getMessage());
         }
     }
 }

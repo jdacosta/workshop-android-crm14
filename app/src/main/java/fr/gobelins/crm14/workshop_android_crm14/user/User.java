@@ -1,10 +1,15 @@
 package fr.gobelins.crm14.workshop_android_crm14.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Created by risq on 10/13/15.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
-    private transient String uid;
+    @JsonIgnore
+    private String uid;
     private String username;
 
     public User() {

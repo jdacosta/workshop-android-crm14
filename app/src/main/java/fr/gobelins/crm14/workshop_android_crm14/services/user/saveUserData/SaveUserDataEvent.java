@@ -20,10 +20,17 @@ public class SaveUserDataEvent {
     }
 
     public SaveUserDataEvent(FirebaseError firebaseError) {
-        mHasError = true;
-        mCode = firebaseError.getCode();
-        mDetails = firebaseError.getDetails();
-        mMessage = firebaseError.getMessage();
+        if (firebaseError == null) {
+            mHasError = false;
+            mCode = 0;
+            mDetails = null;
+            mMessage = null;
+        } else {
+            mHasError = true;
+            mCode = firebaseError.getCode();
+            mDetails = firebaseError.getDetails();
+            mMessage = firebaseError.getMessage();
+        }
     }
 
     public int getCode() {

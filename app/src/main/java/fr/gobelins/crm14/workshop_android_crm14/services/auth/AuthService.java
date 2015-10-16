@@ -49,19 +49,19 @@ public class AuthService {
                 .createUser(email, password, new RegisterHandler(username));
     }
 
-    public void saveUserData(String uid, User user) {
+    public void saveUserData(User user) {
         DatabaseService.getInstance()
                 .getFirebase()
                 .child("user")
-                .child(uid)
+                .child(user.getUid())
                 .setValue(user, new SaveUserDataHandler());
     }
 
-    public void getUserData(String uid) {
+    public void getUserData(User user) {
         DatabaseService.getInstance()
                 .getFirebase()
                 .child("user")
-                .child(uid)
+                .child(user.getUid())
                 .addValueEventListener(new GetUserDataHandler());
     }
 
@@ -69,10 +69,10 @@ public class AuthService {
     public void onAuthenticate(AuthenticationEvent event) {
         if (!event.hasError()) {
             Log.d(TAG, "Auth success");
-            currentUser = new User();
+            currentUser = new User(event.getAuthData().getUid());
             currentAuthData = event.getAuthData();
             AuthService.getInstance()
-                    .getUserData(currentAuthData.getUid());
+                    .getUserData(currentUser);
         }
     }
 
@@ -81,9 +81,9 @@ public class AuthService {
         if (!event.hasError()){
             Log.d(TAG, "Register success");
             Log.d(TAG, "New user uid: " + event.getUid());
-            User user = new User();
+            User user = new User(event.getUid());
             user.setUsername(event.getUsername());
-            saveUserData(event.getUid(), user);
+            saveUserData(user);
         }
     }
 
@@ -98,6 +98,7 @@ public class AuthService {
     public void onGetUserData(GetUserDataEvent event) {
         if (!event.hasError()) {
             currentUser = event.getUser();
+            currentUser.setUid(currentAuthData.getUid());
             Log.d(TAG, "Get user data " + event.getUser().toString());
         }
     }

@@ -74,9 +74,13 @@ public class AuthService {
         if (!event.hasError()) {
             currentUser = event.getUser();
             currentUser.setUid(currentAuthData.getUid());
-            Log.d(TAG, "Get user data " + event.getUser().toString());
+            Log.d(TAG, "Get current user data success: " + event.getUser().toString());
+
+        } else {
+            Log.d(TAG, "Error getting current user data: " + event.getCode() + " - " + event.getMessage());
         }
     }
+
 
     @Produce
     public GetCurrentUserDataEvent produceGetUserData() {

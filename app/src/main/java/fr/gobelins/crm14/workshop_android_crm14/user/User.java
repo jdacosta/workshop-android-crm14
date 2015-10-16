@@ -1,15 +1,17 @@
 package fr.gobelins.crm14.workshop_android_crm14.user;
 
-import com.firebase.client.AuthData;
-
 /**
  * Created by risq on 10/13/15.
  */
 public class User {
-    private String uid;
+    private transient String uid;
     private String username;
 
     public User() {
+    }
+
+    public User(String uid) {
+        this.uid = uid;
     }
 
     public String getUsername() {
@@ -18,6 +20,14 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     @Override

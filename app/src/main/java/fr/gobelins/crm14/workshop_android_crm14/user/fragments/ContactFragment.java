@@ -5,13 +5,17 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import fr.gobelins.crm14.workshop_android_crm14.R;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthService;
 import fr.gobelins.crm14.workshop_android_crm14.user.adapter.ContactAdapter;
 
 /**
@@ -22,6 +26,7 @@ import fr.gobelins.crm14.workshop_android_crm14.user.adapter.ContactAdapter;
  */
 public class ContactFragment extends Fragment {
 
+    private static final String TAG = "ContactFragment";
     private OnFragmentInteractionListener mListener;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -51,6 +56,8 @@ public class ContactFragment extends Fragment {
         mAdapter = new ContactAdapter(mDatas);
         mRecyclerView.setAdapter(mAdapter);
 
+        ButterKnife.bind(this, view);
+
         return view;
     }
 
@@ -68,13 +75,20 @@ public class ContactFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        ButterKnife.unbind(this);
         mListener = null;
         mRecyclerView = null;
         mAdapter = null;
         mLayoutManager = null;
     }
 
+    @OnClick(R.id.userContactAddFab)
+    public void onAddContactFabClick() {
+        mListener.onAddContactFabClick();
+    }
+
     public interface OnFragmentInteractionListener {
+        void onAddContactFabClick();
     }
 
 }

@@ -39,8 +39,6 @@ public class DashboardActivity extends AppCompatActivity implements ProfileFragm
         // instantiate tablayout
         TabLayout tabLayout = (TabLayout) findViewById(R.id.dashboardTabs);
         tabLayout.setupWithViewPager(viewPager);
-
-        showAddContactDialog();
     }
 
     @Override
@@ -68,7 +66,12 @@ public class DashboardActivity extends AppCompatActivity implements ProfileFragm
     }
 
     @Override
+    public void onAddContactFabClick() {
+        showAddContactDialog();
+    }
+
+    @Override
     public void onAddContact(String username) {
-        Log.d(TAG, "onAddContact");
+        Log.d(TAG, "Add contact " + username);
     }
 }

@@ -77,6 +77,15 @@ public class AddContactDialogFragment extends DialogFragment {
         return builder.create();
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        usernameField.requestFocus();
+        getDialog().getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+    }
+
+
     public interface OnFragmentInteractionListener {
         void onAddContact(String username);
     }

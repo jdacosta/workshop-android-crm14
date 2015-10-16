@@ -5,6 +5,7 @@ import android.util.Base64;
 
 import com.tozny.crypto.android.AesCbcWithIntegrity;
 
+import org.spongycastle.jce.provider.BouncyCastleProvider;
 import org.spongycastle.util.Arrays;
 import org.spongycastle.util.io.pem.PemObject;
 import org.spongycastle.util.io.pem.PemWriter;
@@ -13,28 +14,45 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Security;
+import java.security.Signature;
+import java.security.spec.AlgorithmParameterSpec;
+import java.security.spec.MGF1ParameterSpec;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.PSSParameterSpec;
 import java.security.spec.RSAKeyGenParameterSpec;
 import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.Cipher;
 
+import fr.gobelins.crm14.workshop_android_crm14.services.utils.Strings;
+
 public class RsaEcbService {
+
     static {
         Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
     }
 
     private static final int RSA_KEY_LENGTH_BITS = 2048;
-    private static final String CIPHER_TRANSFORMATION = "RSA/ECB/OAEPWithSHA1AndMGF1Padding";
+
+    private static final String CIPHER_TRANSFORMATION = "RSA/ECB/OAEPWithSHA256AndMGF1Padding";
+
     private static final String CIPHER = "RSA";
+
+    private static final String SIGNATURE_ALGORITHM = "SHA256withRSA/PSS";
+    private static final String PSS_DIGEST_ALGORITHM = "SHA-256";
     private static final String CIPHER_PROVIDER = "SC";
+    private static final String PSS_MASK_ALGORITHM = "MGF1";
+    private static final int PSS_SALT_LEN = 20;
+    private static final int PSS_TRAILER_FIELD = 1;
     private static final String RANDOM_ALGORITHM = "SHA1PRNG";
     private static final String PEM_PUBLIC_KEY = "PUBLIC KEY";
     private static final String PEM_PRIVATE_KEY = "PRIVATE KEY";
@@ -48,8 +66,7 @@ public class RsaEcbService {
         // Ensure fixPrng() get called
         AesCbcWithIntegrity.generateSalt();
 
-        SecureRandom random = null;
-        random = SecureRandom.getInstance(RANDOM_ALGORITHM);
+        SecureRandom random = SecureRandom.getInstance(RANDOM_ALGORITHM);
 
         RSAKeyGenParameterSpec spec = new RSAKeyGenParameterSpec(RSA_KEY_LENGTH_BITS, RSAKeyGenParameterSpec.F4);
         KeyPairGenerator generator = KeyPairGenerator.getInstance(CIPHER, CIPHER_PROVIDER);
@@ -107,7 +124,7 @@ public class RsaEcbService {
         String lines[] = key.split("\n");
         for (String line : lines) {
             if (!line.contains(PUBLIC_KEY_HEADER) && !line.contains(PUBLIC_KEY_FOOTER) &&
-                    isNullOrEmpty(line.trim())) {
+                    Strings.isNullOrEmpty(line.trim())) {
                 strippedKey.append(line.trim());
             }
         }
@@ -119,7 +136,7 @@ public class RsaEcbService {
         String lines[] = key.split("\n");
         for (String line : lines) {
             if (!line.contains(PRIVATE_KEY_HEADER) && !line.contains(PRIVATE_KEY_FOOTER) &&
-                    isNullOrEmpty(line.trim())) {
+                    Strings.isNullOrEmpty(line.trim())) {
                 strippedKey.append(line.trim());
             }
         }
@@ -137,8 +154,8 @@ public class RsaEcbService {
         return cipher.doFinal(plaintext);
     }
 
-    public static String decryptString(byte[] cipherText, PrivateKey privateKey) throws GeneralSecurityException, UnsupportedEncodingException {
-        return new String(decrypt(cipherText, privateKey), ENCODING);
+    public static String decrypt(String cipherText, PrivateKey privateKey) throws GeneralSecurityException, UnsupportedEncodingException {
+        return new String(decrypt(Base64.decode(cipherText, Base64.DEFAULT), privateKey), ENCODING);
     }
 
     public static byte[] decrypt(byte[] cipherText, PrivateKey privateKey) throws GeneralSecurityException {
@@ -148,7 +165,40 @@ public class RsaEcbService {
         return cipher.doFinal(cipherText);
     }
 
-    public static boolean isNullOrEmpty(String str) {
-        return str == null || str.isEmpty();
+    public static String genSignature(String input, PrivateKey privateKey) throws UnsupportedEncodingException, GeneralSecurityException {
+        byte[] signature = genSignature(input.getBytes(ENCODING), privateKey);
+        return Base64.encodeToString(signature, Base64.DEFAULT);
+    }
+
+    public static byte[] genSignature(byte[] input, PrivateKey privateKey) throws GeneralSecurityException {
+        Signature s = getSignatureInstance();
+        s.initSign(privateKey);
+        s.update(input);
+
+        return s.sign();
+    }
+
+    public static boolean checkSignature(String signature, String input, PublicKey publicKey) throws UnsupportedEncodingException, GeneralSecurityException {
+        return checkSignature(Base64.decode(signature, Base64.DEFAULT), input.getBytes(ENCODING), publicKey);
+    }
+
+    public static boolean checkSignature(byte[] signature, byte[] input, PublicKey publicKey) throws GeneralSecurityException {
+        Signature s = getSignatureInstance();
+        s.initVerify(publicKey);
+        s.update(input);
+
+        return s.verify(signature);
+    }
+
+    private static Signature getSignatureInstance() {
+        try {
+            Signature s = Signature.getInstance(SIGNATURE_ALGORITHM, new BouncyCastleProvider());
+            AlgorithmParameterSpec algoSpec = new MGF1ParameterSpec(PSS_DIGEST_ALGORITHM);
+            PSSParameterSpec spec1 = new PSSParameterSpec(PSS_DIGEST_ALGORITHM, PSS_MASK_ALGORITHM, algoSpec, PSS_SALT_LEN, PSS_TRAILER_FIELD);
+            s.setParameter(spec1);
+            return s;
+        } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

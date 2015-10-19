@@ -69,7 +69,7 @@ public class UserService {
                 .child("user")
                 .orderByChild("username")
                 .equalTo(contactUsername)
-                .addChildEventListener(new FindUserByUsernameHandler(FindUserByUsernameEvent.FIND_USER_TO_ADD_CONTACT));
+                .addListenerForSingleValueEvent(new FindUserByUsernameHandler(FindUserByUsernameEvent.FIND_USER_TO_ADD_CONTACT));
     }
 
     private void addContactToCurrentUser(User contact) {
@@ -105,7 +105,7 @@ public class UserService {
 
     @Subscribe
     public void onFindUserByUsername(FindUserByUsernameEvent event) {
-        if (!event.hasError()) {
+        if (!event.hasError() && event.hasFoundUser()) {
             Log.d(TAG, "Find user by username success: " + event.getUser().toString());
             if (event.getRequestId() == FindUserByUsernameEvent.FIND_USER_TO_ADD_CONTACT) {
                 Log.d(TAG, "Adding found user to contacts: " + event.getUser().toString());

@@ -4,24 +4,31 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.squareup.otto.Subscribe;
 
 import fr.gobelins.crm14.workshop_android_crm14.R;
 import fr.gobelins.crm14.workshop_android_crm14.dashboard.adapter.SectionsPagerAdapter;
 import fr.gobelins.crm14.workshop_android_crm14.discussion.fragments.InboxFragment;
+import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
 import fr.gobelins.crm14.workshop_android_crm14.services.user.UserService;
+import fr.gobelins.crm14.workshop_android_crm14.services.user.findUserByUserName.FindUserByUsernameEvent;
 import fr.gobelins.crm14.workshop_android_crm14.user.fragments.ContactFragment;
 import fr.gobelins.crm14.workshop_android_crm14.user.fragments.ProfileFragment;
 import fr.gobelins.crm14.workshop_android_crm14.user.fragments.dialog.AddContactDialogFragment;
 
 public class DashboardActivity extends AppCompatActivity implements ProfileFragment.OnFragmentInteractionListener,
-        ContactFragment.OnFragmentInteractionListener, InboxFragment.OnFragmentInteractionListener, AddContactDialogFragment.OnFragmentInteractionListener {
+        ContactFragment.OnFragmentInteractionListener, InboxFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "DashboardActivity";
+    private AddContactDialogFragment addContactDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +67,21 @@ public class DashboardActivity extends AppCompatActivity implements ProfileFragm
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    protected void onPause() {
+        BusProvider.getInstance().unregister(this);
+        super.onPause();
+    }
+
     private void showAddContactDialog() {
         FragmentManager fm = getSupportFragmentManager();
-        AddContactDialogFragment addContactDialogFragment = new AddContactDialogFragment();
+        addContactDialogFragment = new AddContactDialogFragment();
         addContactDialogFragment.show(fm, "fragment_add_contact");
     }
 
@@ -71,10 +90,11 @@ public class DashboardActivity extends AppCompatActivity implements ProfileFragm
         showAddContactDialog();
     }
 
-    @Override
-    public void onAddContact(String username) {
-        Log.d(TAG, "Add contact " + username);
-        UserService.getInstance()
-                .addContactByUsername(username);
+    @Subscribe
+    public void onFindUserByUsername(FindUserByUsernameEvent event) {
+        if (event.getRequestId() == FindUserByUsernameEvent.FIND_USER_TO_ADD_CONTACT &&
+                !event.hasError() && event.hasFoundUser()) {
+            addContactDialogFragment.dismiss();
+        }
     }
 }

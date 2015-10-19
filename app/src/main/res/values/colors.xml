@@ -10,4 +10,5 @@
     <color name="white">#fefefe</color>
     <color name="statusBarColor">#1e1e1e</color>
     <color name="background_material_dark">#212121</color>
+    <color name="colorError">#ff5555</color>
 </resources>

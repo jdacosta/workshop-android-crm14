@@ -17,13 +17,16 @@ public class FindUserByUsernameEvent {
     private final String mMessage;
     private final User mUser;
     private final int mRequestId;
+    private final boolean mFoundUser;
 
     public FindUserByUsernameEvent(String userId, int requestId) {
+        Log.d("findUser", "Found: " + userId);
         if (userId == null) {
-            mHasError = true;
+            mFoundUser = false;
         } else {
-            mHasError = false;
+            mFoundUser = true;
         }
+        mHasError = false;
         mCode = 0;
         mDetails = null;
         mMessage = null;
@@ -33,9 +36,21 @@ public class FindUserByUsernameEvent {
 
     public FindUserByUsernameEvent(FirebaseError firebaseError, int requestId) {
         mHasError = true;
+        mFoundUser = false;
         mCode = firebaseError.getCode();
         mDetails = firebaseError.getDetails();
         mMessage = firebaseError.getMessage();
+        mUser = null;
+        mRequestId = requestId;
+    }
+
+    public FindUserByUsernameEvent(int requestId) {
+        Log.d("findUser", "Not found");
+        mHasError = false;
+        mFoundUser = false;
+        mCode = 0;
+        mDetails = null;
+        mMessage = null;
         mUser = null;
         mRequestId = requestId;
     }
@@ -55,6 +70,8 @@ public class FindUserByUsernameEvent {
     public boolean hasError() {
         return mHasError;
     }
+
+    public boolean hasFoundUser() { return mFoundUser; };
 
     public User getUser() {
         return mUser;

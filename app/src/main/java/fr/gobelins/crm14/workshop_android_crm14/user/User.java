@@ -11,6 +11,7 @@ public class User {
     @JsonIgnore
     private String uid;
     private String username;
+    private String pubKey;
 
     public User() {
     }
@@ -35,11 +36,20 @@ public class User {
         this.uid = uid;
     }
 
+    public String getPubKey() {
+        return pubKey;
+    }
+
+    public void setPubKey(String pubKey) {
+        this.pubKey = pubKey;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "uid='" + uid + '\'' +
                 ", username='" + username + '\'' +
+                ", pubKey='" + pubKey + '\'' +
                 '}';
     }
 }

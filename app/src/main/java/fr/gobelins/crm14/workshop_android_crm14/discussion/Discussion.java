@@ -17,8 +17,9 @@ public class Discussion {
     private String authorUid;
     private String guestUid;
     private String encryptedPassPhrase;
-    private String encryptedAuthorChallengeSecret;
-    private String encryptedGuestChallengeSecret;
+    private String signature;
+    private String authorSignature;
+    private String guestSignature;
     private Date creationDate;
     private List<String> messagesUids;
 
@@ -61,20 +62,20 @@ public class Discussion {
         this.encryptedPassPhrase = encryptedPassPhrase;
     }
 
-    public String getEncryptedAuthorChallengeSecret() {
-        return encryptedAuthorChallengeSecret;
+    public String getAuthorSignatureSecret() {
+        return authorSignature;
     }
 
-    public void setEncryptedAuthorChallengeSecret(String encryptedAuthorChallengeSecret) {
-        this.encryptedAuthorChallengeSecret = encryptedAuthorChallengeSecret;
+    public void setAuthorSignatureSecret(String authorSignature) {
+        this.authorSignature = authorSignature;
     }
 
-    public String getEncryptedGuestChallengeSecret() {
-        return encryptedGuestChallengeSecret;
+    public String getGuestSignatureSecret() {
+        return guestSignature;
     }
 
-    public void setEncryptedGuestChallengeSecret(String encryptedGuestChallengeSecret) {
-        this.encryptedGuestChallengeSecret = encryptedGuestChallengeSecret;
+    public void setGuestSignatureSecret(String guestSignature) {
+        this.guestSignature = guestSignature;
     }
 
     public Date getCreationDate() {
@@ -91,5 +92,13 @@ public class Discussion {
 
     public void setMessagesUids(List<String> messagesUids) {
         this.messagesUids = messagesUids;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
     }
 }

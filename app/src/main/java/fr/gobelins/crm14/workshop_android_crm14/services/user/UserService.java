@@ -45,6 +45,15 @@ public class UserService {
                 .setValue(user, new SaveUserDataHandler());
     }
 
+    public void saveUserPublicKey(User user, String pubKey) {
+        DatabaseService.getInstance()
+                .getFirebase()
+                .child("user")
+                .child(user.getUid())
+                .child("pubKey")
+                .setValue(pubKey); // TODO : ADD CUSTOM HANDLER
+    }
+
     public void getCurrentUserData() {
         User user = AuthService.getInstance()
                 .getCurrentUser();

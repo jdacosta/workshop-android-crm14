@@ -6,8 +6,11 @@ import android.content.SharedPreferences;
 public class Preferences {
 
     public static final String SHARED_PREFERENCES = "fr.gobelins.crm14.workshop_android_crm14";
+    public static final String RSA_GENERATED = "RSA_GENERATED";
     public static final String RSA_PUBLIC_KEY = "RSA_PUBLIC_KEY";
     public static final String RSA_PRIVATE_KEY = "RSA_PRIVATE_KEY";
+    public static final String SIGNATURE = "SIGNATURE";
+    public static final String SIGNATURE_GENERATED = "SIGNATURE_GENERATED";
     public static SharedPreferences mPreferences;
 
     public static void setContext(Context context) {

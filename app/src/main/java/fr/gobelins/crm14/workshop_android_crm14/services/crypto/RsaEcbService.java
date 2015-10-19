@@ -1,12 +1,10 @@
 package fr.gobelins.crm14.workshop_android_crm14.services.crypto;
 
-
-import android.util.Base64;
-
 import com.tozny.crypto.android.AesCbcWithIntegrity;
 
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 import org.spongycastle.util.Arrays;
+import org.spongycastle.util.encoders.Base64;
 import org.spongycastle.util.io.pem.PemObject;
 import org.spongycastle.util.io.pem.PemWriter;
 
@@ -103,7 +101,7 @@ public class RsaEcbService {
     public static PublicKey getRSAPublicKeyFromString(String publicKeyPEM) throws GeneralSecurityException, UnsupportedEncodingException {
         publicKeyPEM = stripPublicKeyHeaders(publicKeyPEM);
         KeyFactory keyFactory = KeyFactory.getInstance(CIPHER, CIPHER_PROVIDER);
-        byte[] publicKeyBytes = Base64.decode(publicKeyPEM.getBytes(ENCODING), Base64.DEFAULT);
+        byte[] publicKeyBytes = Base64.decode(publicKeyPEM.getBytes(ENCODING));
         X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(publicKeyBytes);
         return keyFactory.generatePublic(x509KeySpec);
     }
@@ -111,7 +109,7 @@ public class RsaEcbService {
     public static PrivateKey getRSAPrivateKeyFromString(String privateKeyPEM) throws GeneralSecurityException, UnsupportedEncodingException {
         privateKeyPEM = stripPrivateKeyHeaders(privateKeyPEM);
         KeyFactory fact = KeyFactory.getInstance(CIPHER, CIPHER_PROVIDER);
-        byte[] clear = Base64.decode(privateKeyPEM.getBytes(ENCODING), Base64.DEFAULT);
+        byte[] clear = Base64.decode(privateKeyPEM);
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(clear);
         PrivateKey priv = fact.generatePrivate(keySpec);
         Arrays.fill(clear, (byte) 0);
@@ -124,7 +122,7 @@ public class RsaEcbService {
         String lines[] = key.split("\n");
         for (String line : lines) {
             if (!line.contains(PUBLIC_KEY_HEADER) && !line.contains(PUBLIC_KEY_FOOTER) &&
-                    Strings.isNullOrEmpty(line.trim())) {
+                    !Strings.isNullOrEmpty(line.trim())) {
                 strippedKey.append(line.trim());
             }
         }
@@ -136,7 +134,7 @@ public class RsaEcbService {
         String lines[] = key.split("\n");
         for (String line : lines) {
             if (!line.contains(PRIVATE_KEY_HEADER) && !line.contains(PRIVATE_KEY_FOOTER) &&
-                    Strings.isNullOrEmpty(line.trim())) {
+                    !Strings.isNullOrEmpty(line.trim())) {
                 strippedKey.append(line.trim());
             }
         }
@@ -145,7 +143,7 @@ public class RsaEcbService {
 
     public static String encrypt(String plaintext, PublicKey publicKey) throws GeneralSecurityException, UnsupportedEncodingException {
         byte[] cipherText = encrypt(plaintext.getBytes(ENCODING), publicKey);
-        return Base64.encodeToString(cipherText, Base64.DEFAULT);
+        return Base64.toBase64String(cipherText);
     }
 
     public static byte[] encrypt(byte[] plaintext, PublicKey publicKey) throws GeneralSecurityException {
@@ -155,7 +153,7 @@ public class RsaEcbService {
     }
 
     public static String decrypt(String cipherText, PrivateKey privateKey) throws GeneralSecurityException, UnsupportedEncodingException {
-        return new String(decrypt(Base64.decode(cipherText, Base64.DEFAULT), privateKey), ENCODING);
+        return new String(decrypt(Base64.decode(cipherText), privateKey), ENCODING);
     }
 
     public static byte[] decrypt(byte[] cipherText, PrivateKey privateKey) throws GeneralSecurityException {
@@ -167,7 +165,7 @@ public class RsaEcbService {
 
     public static String genSignature(String input, PrivateKey privateKey) throws UnsupportedEncodingException, GeneralSecurityException {
         byte[] signature = genSignature(input.getBytes(ENCODING), privateKey);
-        return Base64.encodeToString(signature, Base64.DEFAULT);
+        return Base64.toBase64String(signature);
     }
 
     public static byte[] genSignature(byte[] input, PrivateKey privateKey) throws GeneralSecurityException {
@@ -179,7 +177,7 @@ public class RsaEcbService {
     }
 
     public static boolean checkSignature(String signature, String input, PublicKey publicKey) throws UnsupportedEncodingException, GeneralSecurityException {
-        return checkSignature(Base64.decode(signature, Base64.DEFAULT), input.getBytes(ENCODING), publicKey);
+        return checkSignature(Base64.decode(signature), input.getBytes(ENCODING), publicKey);
     }
 
     public static boolean checkSignature(byte[] signature, byte[] input, PublicKey publicKey) throws GeneralSecurityException {

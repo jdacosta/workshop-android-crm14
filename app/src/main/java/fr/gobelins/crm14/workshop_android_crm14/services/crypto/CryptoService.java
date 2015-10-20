@@ -115,6 +115,34 @@ public class CryptoService {
         return publicKey;
     }
 
+    public static void writePublicKeyToPreferences(KeyPair keyPair) {
+        StringWriter publicStringWriter = new StringWriter();
+        try {
+            PemWriter pemWriter = new PemWriter(publicStringWriter);
+            pemWriter.writeObject(new PemObject("PUBLIC KEY", keyPair.getPublic().getEncoded()));
+            pemWriter.flush();
+            pemWriter.close();
+            Preferences.putString(Preferences.RSA_PUBLIC_KEY, publicStringWriter.toString());
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void writePrivateKeyToPreferences(KeyPair keyPair) {
+        StringWriter privateStringWriter = new StringWriter();
+        try {
+            PemWriter pemWriter = new PemWriter(privateStringWriter);
+            pemWriter.writeObject(new PemObject("PRIVATE KEY", keyPair.getPrivate().getEncoded()));
+            pemWriter.flush();
+            pemWriter.close();
+            Preferences.putString(Preferences.RSA_PRIVATE_KEY, privateStringWriter.toString());
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     public static void storeKeys(KeyPair keyPair) {
         if (keyPair == null) throw new AssertionError();
 
@@ -149,31 +177,84 @@ public class CryptoService {
         //        Preferences.getString(Preferences.RSA_PUBLIC_KEY));
     }
 
-    public static void writePublicKeyToPreferences(KeyPair keyPair) {
-        StringWriter publicStringWriter = new StringWriter();
-        try {
-            PemWriter pemWriter = new PemWriter(publicStringWriter);
-            pemWriter.writeObject(new PemObject("PUBLIC KEY", keyPair.getPublic().getEncoded()));
-            pemWriter.flush();
-            pemWriter.close();
-            Preferences.putString(Preferences.RSA_PUBLIC_KEY, publicStringWriter.toString());
-        } catch (IOException e) {
-            Log.e(TAG, e.getMessage());
-            e.printStackTrace();
+    public static void generateAndStoreRSAKeys() {
+        if (!Preferences.getBoolean(Preferences.RSA_GENERATED)) {
+            Log.d(TAG, "Generate and store RSA KeyPair");
+            storeKeys(generateKeyPair());
+        } else {
+            Log.d(TAG, "Private key : " + Preferences.getString(Preferences.RSA_PRIVATE_KEY));
+            Log.d(TAG, "Public key : " + Preferences.getString(Preferences.RSA_PUBLIC_KEY));
         }
     }
 
-    public static void writePrivateKeyToPreferences(KeyPair keyPair) {
-        StringWriter privateStringWriter = new StringWriter();
+    public static void generateAndStoreSignature() {
+
+        if (!Preferences.getBoolean(Preferences.RSA_GENERATED)) {
+            generateAndStoreRSAKeys();
+        }
+
+        if (!Preferences.getBoolean(Preferences.SIGNATURE_GENERATED)) {
+            Log.d(TAG, "Generate passphrase");
+            String passphrase = null;
+            try {
+                passphrase = generatePassphrase();
+            } catch (GeneralSecurityException e) {
+                e.printStackTrace();
+            }
+
+            Log.d(TAG, "Generate and store signature");
+            storeSignature(generateSignature(passphrase));
+        }
+        else {
+            Log.d(TAG, "Signature " + Preferences.getString(Preferences.SIGNATURE));
+        }
+    }
+
+    public static void checkSignature() {
+
+        // TODO : Get signature via Firebase
+        String signature = Preferences.getString(Preferences.SIGNATURE);
+
+        // check signature
+        boolean checkSignature = false;
         try {
-            PemWriter pemWriter = new PemWriter(privateStringWriter);
-            pemWriter.writeObject(new PemObject("PRIVATE KEY", keyPair.getPrivate().getEncoded()));
-            pemWriter.flush();
-            pemWriter.close();
-            Preferences.putString(Preferences.RSA_PRIVATE_KEY, privateStringWriter.toString());
-        } catch (IOException e) {
-            Log.e(TAG, e.getMessage());
+            // TODO : GET PUBLIC KEY WITH FIREBASE (SENDER)
+            // TODO : Fix with sender passphrase
+            checkSignature = RsaEcbService.checkSignature(signature, "PASSPHRASE", getPublicKey());
+        } catch (UnsupportedEncodingException | GeneralSecurityException e) {
             e.printStackTrace();
         }
+
+        if (!checkSignature) {
+            throw new AssertionError();
+        } else {
+            Log.d(TAG, "RSA Signing [ OK ]");
+        }
+    }
+
+    public static String encryptMessage(String message) {
+        String encryptedMessage = null;
+        try {
+            encryptedMessage = RsaEcbService.encrypt(message, getPublicKey()); // TODO : Get Public key via Firebase
+        } catch (GeneralSecurityException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        if (encryptedMessage == null) throw new AssertionError();
+
+        return encryptedMessage;
+    }
+
+    public static String decryptMessage(String encryptedMessage) {
+        String message = null;
+        try {
+            message = RsaEcbService.decrypt(encryptedMessage, getPrivateKey());
+        } catch (GeneralSecurityException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        if (message != null)  throw new AssertionError();
+
+        return message;
     }
 }

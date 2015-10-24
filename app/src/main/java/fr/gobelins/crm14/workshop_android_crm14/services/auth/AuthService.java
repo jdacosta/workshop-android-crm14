@@ -24,6 +24,7 @@ public class AuthService {
     private static AuthService ourInstance = new AuthService();
 
     private User currentUser;
+    
     private AuthData currentAuthData;
 
     public static AuthService getInstance() {

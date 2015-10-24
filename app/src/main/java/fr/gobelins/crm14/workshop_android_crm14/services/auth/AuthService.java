@@ -3,6 +3,8 @@ package fr.gobelins.crm14.workshop_android_crm14.services.auth;
 import android.util.Log;
 
 import com.firebase.client.AuthData;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 import com.squareup.otto.Produce;
 import com.squareup.otto.Subscribe;
 
@@ -24,7 +26,8 @@ public class AuthService {
     private static AuthService ourInstance = new AuthService();
 
     private User currentUser;
-    
+    private String currentPassword;
+    private String currentEmail;
     private AuthData currentAuthData;
 
     public static AuthService getInstance() {
@@ -36,6 +39,8 @@ public class AuthService {
     }
 
     public void authenticate(final String email, final String password) {
+        currentEmail = email;
+        currentPassword = password;
         DatabaseService.getInstance()
                 .getFirebase()
                 .authWithPassword(email, password, new AuthenticationHandler());
@@ -45,6 +50,22 @@ public class AuthService {
         DatabaseService.getInstance()
                 .getFirebase()
                 .createUser(email, password, new RegisterHandler(username));
+    }
+
+    private void updateEmail(String newEmail) {
+        DatabaseService.getInstance()
+                .getFirebase()
+                .changeEmail(currentEmail, newEmail, currentPassword, new Firebase.ResultHandler() {
+                    @Override
+                    public void onSuccess() {
+                        // email changed
+                    }
+
+                    @Override
+                    public void onError(FirebaseError firebaseError) {
+                        // error encountered
+                    }
+                });
     }
 
     @Subscribe
@@ -103,5 +124,9 @@ public class AuthService {
 
     public void setCurrentAuthData(AuthData currentAuthData) {
         this.currentAuthData = currentAuthData;
+    }
+
+    public String getCurrentEmail() {
+        return currentEmail;
     }
 }

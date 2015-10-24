@@ -106,6 +106,8 @@ public class DashboardActivity extends AppCompatActivity implements ProfileFragm
     public void onOpenDiscussion(OpenDiscussionEvent event) {
         User contact = event.getContact();
         Intent discussionIntent = new Intent(this, DiscussionActivity.class);
+        discussionIntent.putExtra("contact", contact);
+
         startActivity(discussionIntent);
     }
 }

@@ -1,5 +1,7 @@
 # CipherWire
 
+**L'application (enfin, si on peut appeler ça une application...) a été publié sur le Play Store**
+
 Nous avons réalisé plusieurs `services` pour faciliter le développement de notre application :
 
 * `AuthService` pour la gestion du compte utilisateur
@@ -52,7 +54,6 @@ Nous avons réalisé plusieurs `services` pour faciliter le développement de no
 ### Ressources et liens
 
 * Github: https://github.com/jdacosta/workshop-android-crm14
-* Archive:
-* Vidéo:
-* APK:
-* Google Play Store:
+* Archive: https://github.com/jdacosta/workshop-android-crm14/releases/tag/0.0.1
+* Screenshot: https://github.com/jdacosta/workshop-android-crm14/tree/rendu_final/Screenshots
+* APK: https://github.com/jdacosta/workshop-android-crm14/tree/rendu_final

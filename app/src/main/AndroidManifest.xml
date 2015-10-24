@@ -25,6 +25,8 @@
         </activity>
         <activity android:name=".user.UserActivity" >
         </activity>
+        <activity android:name=".discussion.DiscussionActivity" >
+        </activity>
         <activity android:name=".dashboard.DashboardActivity" >
         </activity>
     </application>

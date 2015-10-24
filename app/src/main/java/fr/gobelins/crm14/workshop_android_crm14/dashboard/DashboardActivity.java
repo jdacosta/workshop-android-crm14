@@ -1,5 +1,6 @@
 package fr.gobelins.crm14.workshop_android_crm14.dashboard;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -16,10 +17,13 @@ import com.squareup.otto.Subscribe;
 
 import fr.gobelins.crm14.workshop_android_crm14.R;
 import fr.gobelins.crm14.workshop_android_crm14.dashboard.adapter.SectionsPagerAdapter;
+import fr.gobelins.crm14.workshop_android_crm14.discussion.DiscussionActivity;
 import fr.gobelins.crm14.workshop_android_crm14.discussion.fragments.InboxFragment;
 import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
 import fr.gobelins.crm14.workshop_android_crm14.services.user.UserService;
 import fr.gobelins.crm14.workshop_android_crm14.services.user.findUserByUserName.FindUserByUsernameEvent;
+import fr.gobelins.crm14.workshop_android_crm14.user.User;
+import fr.gobelins.crm14.workshop_android_crm14.user.events.OpenDiscussionEvent;
 import fr.gobelins.crm14.workshop_android_crm14.user.fragments.ContactFragment;
 import fr.gobelins.crm14.workshop_android_crm14.user.fragments.ProfileFragment;
 import fr.gobelins.crm14.workshop_android_crm14.user.fragments.dialog.AddContactDialogFragment;
@@ -96,5 +100,12 @@ public class DashboardActivity extends AppCompatActivity implements ProfileFragm
                 !event.hasError() && event.hasFoundUser()) {
             addContactDialogFragment.dismiss();
         }
+    }
+
+    @Subscribe
+    public void onOpenDiscussion(OpenDiscussionEvent event) {
+        User contact = event.getContact();
+        Intent discussionIntent = new Intent(this, DiscussionActivity.class);
+        startActivity(discussionIntent);
     }
 }

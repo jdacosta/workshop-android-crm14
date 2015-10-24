@@ -29,7 +29,7 @@ public class RSACryptoService {
 
     private static final int PASSPHRASE_LENGTH = 512;
     private static final String RANDOM_ALGORITHM = "SHA1PRNG";
-    private static final String TAG = "CryptoService";
+    private static final String TAG = "RSACryptoService";
 
     @NonNull
     public static String generatePassphrase() throws GeneralSecurityException {

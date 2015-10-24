@@ -25,4 +25,6 @@
     <string name="user.contact.add.username.hint">Contact username</string>
     <string name="user.contact.add.error.text">User does not exist !</string>
     <string name="user.contact.add.button.text">Add</string>
+
+    <string name="user.profile.hello">Hello,</string>
 </resources>

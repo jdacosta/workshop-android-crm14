@@ -5,6 +5,7 @@ import android.util.Log;
 import com.squareup.otto.Subscribe;
 
 import fr.gobelins.crm14.workshop_android_crm14.discussion.Discussion;
+import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
 import fr.gobelins.crm14.workshop_android_crm14.services.DatabaseService;
 import fr.gobelins.crm14.workshop_android_crm14.services.discussion.getDiscussion.GetDiscussionEvent;
 import fr.gobelins.crm14.workshop_android_crm14.services.discussion.saveDiscussion.SaveDiscussionEvent;
@@ -26,6 +27,7 @@ public class DiscussionService {
     }
 
     private DiscussionService() {
+        BusProvider.getInstance().register(this);
     }
 
     public void saveDiscussion(Discussion discussion) {

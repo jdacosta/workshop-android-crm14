@@ -6,7 +6,6 @@ import com.firebase.client.ValueEventListener;
 
 import fr.gobelins.crm14.workshop_android_crm14.discussion.Discussion;
 import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
-import fr.gobelins.crm14.workshop_android_crm14.user.User;
 
 /**
  * Created by risq on 10/14/15.

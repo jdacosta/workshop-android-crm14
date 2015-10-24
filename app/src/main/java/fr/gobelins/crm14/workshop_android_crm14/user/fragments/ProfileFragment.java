@@ -65,6 +65,22 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        BusProvider.getInstance().unregister(this);
+        ButterKnife.unbind(this);
+        mListener = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        BusProvider.getInstance().unregister(this);
+        ButterKnife.unbind(this);
+        mListener = null;
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         BusProvider.getInstance().unregister(this);

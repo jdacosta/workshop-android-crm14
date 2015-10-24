@@ -14,6 +14,8 @@ import fr.gobelins.crm14.workshop_android_crm14.services.DatabaseService;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthService;
 import fr.gobelins.crm14.workshop_android_crm14.services.user.findUserByUserName.FindUserByUsernameEvent;
 import fr.gobelins.crm14.workshop_android_crm14.services.user.findUserByUserName.FindUserByUsernameHandler;
+import fr.gobelins.crm14.workshop_android_crm14.services.user.getCurrentUserContacts.GetCurrentUserContactsEvent;
+import fr.gobelins.crm14.workshop_android_crm14.services.user.getCurrentUserContacts.GetCurrentUserContactsHandler;
 import fr.gobelins.crm14.workshop_android_crm14.services.user.getCurrentUserData.GetCurrentUserDataEvent;
 import fr.gobelins.crm14.workshop_android_crm14.services.user.getCurrentUserData.GetCurrentUserDataHandler;
 import fr.gobelins.crm14.workshop_android_crm14.services.user.getUserData.GetUserDataEvent;
@@ -64,12 +66,32 @@ public class UserService {
                 .addValueEventListener(new GetCurrentUserDataHandler());
     }
 
-    public void getUserData(User user) {
+    public void getCurrentUserContacts() {
+        Log.d(TAG, "getCurrentUserContacts");
+        User user = AuthService.getInstance()
+                .getCurrentUser();
         DatabaseService.getInstance()
                 .getFirebase()
                 .child("user")
                 .child(user.getUid())
-                .addValueEventListener(new GetUserDataHandler());
+                .child("contacts")
+                .addChildEventListener(new GetCurrentUserContactsHandler());
+    }
+
+//    public void getUserData(String uid) {
+//        DatabaseService.getInstance()
+//                .getFirebase()
+//                .child("user")
+//                .child(uid)
+//                .addValueEventListener(new GetUserDataHandler());
+//    }
+
+    public void getUserDataToAddToContactsList(String uid) {
+        DatabaseService.getInstance()
+                .getFirebase()
+                .child("user")
+                .child(uid)
+                .addValueEventListener(new GetUserDataHandler(GetUserDataEvent.GET_USER_DATA_TO_APPEND_CONTACTS_LIST, uid));
     }
 
     public void addContactByUsername(String contactUsername) {
@@ -106,9 +128,9 @@ public class UserService {
     @Subscribe
     public void onGetUserData(GetUserDataEvent event) {
         if (!event.hasError()) {
-            Log.d(TAG, "Get user data success: " + event.getUser().toString());
+//            Log.d(TAG, "Get user data success: " + event.getUser().toString());
         } else {
-            Log.d(TAG, "Error saving user data: " + event.getCode() + " - " + event.getMessage());
+//            Log.d(TAG, "Error saving user data: " + event.getCode() + " - " + event.getMessage());
         }
     }
 
@@ -122,6 +144,14 @@ public class UserService {
             }
         } else {
             Log.d(TAG, "Error finding user by username: " + event.getCode() + " - " + event.getMessage());
+        }
+    }
+
+    @Subscribe
+    public void onGetCurrentUserContact(GetCurrentUserContactsEvent event) {
+        if (!event.hasError()) {
+            Log.d(TAG, "Contact found: " + event.getContactId());
+            getUserDataToAddToContactsList(event.getContactId());
         }
     }
 }

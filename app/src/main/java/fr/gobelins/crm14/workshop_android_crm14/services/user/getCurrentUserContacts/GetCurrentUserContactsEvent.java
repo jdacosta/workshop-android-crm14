@@ -1,42 +1,42 @@
-package fr.gobelins.crm14.workshop_android_crm14.services.user.getUserData;
+package fr.gobelins.crm14.workshop_android_crm14.services.user.getCurrentUserContacts;
 
 import com.firebase.client.FirebaseError;
 
 import fr.gobelins.crm14.workshop_android_crm14.user.User;
 
 /**
- * Created by risq on 10/14/15.
+ * Created by risq on 10/24/15.
  */
-public class GetUserDataEvent {
-    public static final int GET_USER_DATA_TO_APPEND_CONTACTS_LIST = 0;
-
+public class GetCurrentUserContactsEvent {
+    public static final int CONTACT_ADD = 0;
+    public static final int CONTACT_REMOVE = 1;
     private final boolean mHasError;
     private final int mCode;
     private final String mDetails;
     private final String mMessage;
-    private final User mUser;
-    private final int mRequestId;
+    private final String mContactId;
+    private final int mAction;
 
-    public GetUserDataEvent(User user, int requestId) {
-        if (user == null) {
+    public GetCurrentUserContactsEvent(String contactId, int action) {
+        if (contactId == null) {
             mHasError = true;
         } else {
             mHasError = false;
         }
+        mAction = action;
         mCode = 0;
         mDetails = null;
         mMessage = null;
-        mUser = user;
-        mRequestId = requestId;
+        mContactId = contactId;
     }
 
-    public GetUserDataEvent(FirebaseError firebaseError, int requestId) {
+    public GetCurrentUserContactsEvent(FirebaseError firebaseError) {
         mHasError = true;
         mCode = firebaseError.getCode();
         mDetails = firebaseError.getDetails();
         mMessage = firebaseError.getMessage();
-        mUser = null;
-        mRequestId = requestId;
+        mContactId = null;
+        mAction = -1;
     }
 
     public int getCode() {
@@ -55,9 +55,10 @@ public class GetUserDataEvent {
         return mHasError;
     }
 
-    public User getUser() {
-        return mUser;
+    public String getContactId() {
+        return mContactId;
     }
 
-    public int getRequestId() { return mRequestId; }
+    public int getAction() { return mAction; }
+
 }

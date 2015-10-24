@@ -10,12 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.squareup.otto.Subscribe;
+
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import fr.gobelins.crm14.workshop_android_crm14.R;
+import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthService;
+import fr.gobelins.crm14.workshop_android_crm14.services.user.getUserData.GetUserDataEvent;
 import fr.gobelins.crm14.workshop_android_crm14.user.adapter.ContactAdapter;
 
 /**
@@ -29,9 +33,8 @@ public class ContactFragment extends Fragment {
     private static final String TAG = "ContactFragment";
     private OnFragmentInteractionListener mListener;
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private ContactAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ArrayList<String> mDatas = new ArrayList<>();
 
     public ContactFragment() {
         // Required empty public constructor
@@ -43,20 +46,22 @@ public class ContactFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contact, container, false);
 
-        // Initial data
-        for (int i = 0; i < 100; i++) {
-            mDatas.add("Contact " + i);
-        }
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.contactRecyclerView);
 
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new ContactAdapter(mDatas);
+        mAdapter = new ContactAdapter();
         mRecyclerView.setAdapter(mAdapter);
 
+        // Initial data
+//        for (int i = 0; i < 100; i++) {
+//            mAdapter.addItem("Contact " + i);
+//        }
+
         ButterKnife.bind(this, view);
+        BusProvider.getInstance().register(this);
 
         return view;
     }
@@ -73,9 +78,10 @@ public class ContactFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDetach() {
+        super.onDetach();
         ButterKnife.unbind(this);
+        BusProvider.getInstance().unregister(this);
         mListener = null;
         mRecyclerView = null;
         mAdapter = null;
@@ -89,6 +95,13 @@ public class ContactFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         void onAddContactFabClick();
+    }
+
+    @Subscribe
+    public void onGetUserData(GetUserDataEvent event) {
+        if (!event.hasError() && event.getRequestId() == GetUserDataEvent.GET_USER_DATA_TO_APPEND_CONTACTS_LIST) {
+            mAdapter.addItem(event.getUser());
+        }
     }
 
 }

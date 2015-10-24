@@ -54,6 +54,8 @@ public class AuthService {
             currentAuthData = event.getAuthData();
             UserService.getInstance()
                     .getCurrentUserData();
+            UserService.getInstance()
+                    .getCurrentUserContacts();
         }
     }
 
@@ -75,7 +77,6 @@ public class AuthService {
             currentUser = event.getUser();
             currentUser.setUid(currentAuthData.getUid());
             Log.d(TAG, "Get current user data success: " + event.getUser().toString());
-
         } else {
             Log.d(TAG, "Error getting current user data: " + event.getCode() + " - " + event.getMessage());
         }

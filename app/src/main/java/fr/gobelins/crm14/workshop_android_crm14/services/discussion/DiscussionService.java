@@ -31,19 +31,19 @@ public class DiscussionService {
     }
 
     public void saveDiscussion(Discussion discussion) {
-        DatabaseService.getInstance()
-                .getFirebase()
-                .child("discussion")
-                .child(discussion.getUid())
-                .setValue(discussion, new SaveDiscussionHandler());
+//        DatabaseService.getInstance()
+//                .getFirebase()
+//                .child("discussion")
+//                .child(discussion.getUid())
+//                .setValue(discussion, new SaveDiscussionHandler());
     }
 
     public void getDiscussion(Discussion discussion) {
-        DatabaseService.getInstance()
-                .getFirebase()
-                .child("discussion")
-                .child(discussion.getUid())
-                .addValueEventListener(new GetUserDataHandler());
+//        DatabaseService.getInstance()
+//                .getFirebase()
+//                .child("discussion")
+//                .child(discussion.getUid())
+//                .addValueEventListener(new GetUserDataHandler());
     }
 
     @Subscribe

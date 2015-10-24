@@ -11,6 +11,7 @@ import fr.gobelins.crm14.workshop_android_crm14.user.User;
  */
 public class FindUserByUsernameEvent {
     public static final int FIND_USER_TO_ADD_CONTACT = 0;
+
     private final boolean mHasError;
     private final int mCode;
     private final String mDetails;

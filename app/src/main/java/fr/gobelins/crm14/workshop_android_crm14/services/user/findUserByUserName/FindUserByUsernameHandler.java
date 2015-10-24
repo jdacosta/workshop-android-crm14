@@ -26,9 +26,11 @@ public class FindUserByUsernameHandler implements ValueEventListener {
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
         if (dataSnapshot.getChildren().iterator().hasNext()) {
-            BusProvider.getInstance().post(new FindUserByUsernameEvent(dataSnapshot.getChildren().iterator().next().getKey(), requestId));
+            BusProvider.getInstance()
+                    .post(new FindUserByUsernameEvent(dataSnapshot.getChildren().iterator().next().getKey(), requestId));
         } else {
-            BusProvider.getInstance().post(new FindUserByUsernameEvent(requestId));
+            BusProvider.getInstance()
+                    .post(new FindUserByUsernameEvent(requestId));
         }
         //
     }

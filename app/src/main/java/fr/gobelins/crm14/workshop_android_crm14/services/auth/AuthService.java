@@ -12,6 +12,7 @@ import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
 import fr.gobelins.crm14.workshop_android_crm14.services.DatabaseService;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.authentication.AuthenticationEvent;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.authentication.AuthenticationHandler;
+import fr.gobelins.crm14.workshop_android_crm14.services.auth.updateEmail.UpdateEmailHandler;
 import fr.gobelins.crm14.workshop_android_crm14.services.user.UserService;
 import fr.gobelins.crm14.workshop_android_crm14.services.user.getCurrentUserData.GetCurrentUserDataEvent;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.register.RegisterHandler;
@@ -52,20 +53,10 @@ public class AuthService {
                 .createUser(email, password, new RegisterHandler(username));
     }
 
-    private void updateEmail(String newEmail) {
+    public void updateEmail(String newEmail) {
         DatabaseService.getInstance()
                 .getFirebase()
-                .changeEmail(currentEmail, newEmail, currentPassword, new Firebase.ResultHandler() {
-                    @Override
-                    public void onSuccess() {
-                        // email changed
-                    }
-
-                    @Override
-                    public void onError(FirebaseError firebaseError) {
-                        // error encountered
-                    }
-                });
+                .changeEmail(currentEmail, newEmail, currentPassword, new UpdateEmailHandler());
     }
 
     @Subscribe

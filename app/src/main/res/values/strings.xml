@@ -27,4 +27,7 @@
     <string name="user.contact.add.button.text">Add</string>
 
     <string name="user.profile.hello">Hello,</string>
+    <string name="user.profile.email.hint">Email</string>
+    <string name="user.profile.button.text">Update</string>
+    <string name="user.profile.email.snackbar.success">Email updated !</string>
 </resources>

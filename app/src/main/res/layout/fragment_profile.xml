@@ -48,4 +48,29 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <EditText
+            android:id="@+id/userProfileEmailField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/user.profile.email.hint"
+            android:inputType="textEmailAddress"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="270dp" />
+
+        <Button
+            android:id="@+id/userProfileUpdateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user.profile.button.text"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/userProfileEmailField"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
 </android.support.design.widget.CoordinatorLayout>

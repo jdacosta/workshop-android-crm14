@@ -28,6 +28,7 @@ import fr.gobelins.crm14.workshop_android_crm14.user.User;
 public class RSACryptoService {
 
     private static final int PASSPHRASE_LENGTH = 512;
+    private static final int ID_LENGTH = 128;
     private static final String RANDOM_ALGORITHM = "SHA1PRNG";
     private static final String TAG = "RSACryptoService";
 
@@ -35,6 +36,12 @@ public class RSACryptoService {
     public static String generatePassphrase() throws GeneralSecurityException {
         SecureRandom random = SecureRandom.getInstance(RANDOM_ALGORITHM);
         return new BigInteger(PASSPHRASE_LENGTH, random).toString(32);
+    }
+
+    @NonNull
+    public static String generateId() throws GeneralSecurityException {
+        SecureRandom random = SecureRandom.getInstance(RANDOM_ALGORITHM);
+        return new BigInteger(ID_LENGTH, random).toString(32);
     }
 
     @NonNull

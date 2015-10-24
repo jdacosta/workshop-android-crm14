@@ -8,6 +8,7 @@ import android.util.Log;
 import fr.gobelins.crm14.workshop_android_crm14.R;
 import fr.gobelins.crm14.workshop_android_crm14.discussion.fragments.ChatFragment;
 import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
+import fr.gobelins.crm14.workshop_android_crm14.services.discussion.DiscussionService;
 import fr.gobelins.crm14.workshop_android_crm14.user.User;
 
 /**
@@ -30,6 +31,9 @@ public class DiscussionActivity extends AppCompatActivity implements ChatFragmen
         Toolbar toolbar = (Toolbar) findViewById(R.id.homeToolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(contact.getUsername());
+
+        DiscussionService.getInstance()
+                .getDiscussionIdByContact(contact);
 
         // Load login fragment
         loadChatFragment();

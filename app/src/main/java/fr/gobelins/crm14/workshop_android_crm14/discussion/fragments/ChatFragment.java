@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import fr.gobelins.crm14.workshop_android_crm14.R;
 import fr.gobelins.crm14.workshop_android_crm14.services.BusProvider;
+import fr.gobelins.crm14.workshop_android_crm14.services.discussion.DiscussionService;
 import fr.gobelins.crm14.workshop_android_crm14.services.user.getUserData.GetUserDataEvent;
 import fr.gobelins.crm14.workshop_android_crm14.user.adapter.ContactAdapter;
 
@@ -58,6 +59,8 @@ public class ChatFragment extends Fragment {
 
         ButterKnife.bind(this, view);
         BusProvider.getInstance().register(this);
+
+
 
         return view;
     }

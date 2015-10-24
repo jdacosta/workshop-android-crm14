@@ -101,4 +101,19 @@ public class Discussion {
     public void setSignature(String signature) {
         this.signature = signature;
     }
+
+    @Override
+    public String toString() {
+        return "Discussion{" +
+                "uid='" + uid + '\'' +
+                ", authorUid='" + authorUid + '\'' +
+                ", guestUid='" + guestUid + '\'' +
+                ", encryptedPassPhrase='" + encryptedPassPhrase + '\'' +
+                ", signature='" + signature + '\'' +
+                ", authorSignature='" + authorSignature + '\'' +
+                ", guestSignature='" + guestSignature + '\'' +
+                ", creationDate=" + creationDate +
+                ", messagesUids=" + messagesUids +
+                '}';
+    }
 }

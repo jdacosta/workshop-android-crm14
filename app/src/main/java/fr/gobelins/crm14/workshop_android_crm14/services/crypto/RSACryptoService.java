@@ -18,31 +18,22 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 
+import fr.gobelins.crm14.workshop_android_crm14.discussion.Discussion;
 import fr.gobelins.crm14.workshop_android_crm14.services.auth.AuthService;
+import fr.gobelins.crm14.workshop_android_crm14.services.discussion.DiscussionService;
 import fr.gobelins.crm14.workshop_android_crm14.services.user.UserService;
 import fr.gobelins.crm14.workshop_android_crm14.services.utils.Preferences;
 import fr.gobelins.crm14.workshop_android_crm14.user.User;
 
-public class CryptoService {
+public class RSACryptoService {
 
-    private static final int SALT_LENGTH = 256;
     private static final int PASSPHRASE_LENGTH = 512;
     private static final String RANDOM_ALGORITHM = "SHA1PRNG";
     private static final String TAG = "CryptoService";
 
     @NonNull
-    public static String generateSalt() throws GeneralSecurityException {
-        AesCbcWithIntegrity.generateSalt();
-        SecureRandom random = SecureRandom.getInstance(RANDOM_ALGORITHM);
-
-        return new BigInteger(SALT_LENGTH, random).toString(32);
-    }
-
-    @NonNull
     public static String generatePassphrase() throws GeneralSecurityException {
-        AesCbcWithIntegrity.generateSalt();
         SecureRandom random = SecureRandom.getInstance(RANDOM_ALGORITHM);
-
         return new BigInteger(PASSPHRASE_LENGTH, random).toString(32);
     }
 
@@ -164,15 +155,15 @@ public class CryptoService {
     public static void storeSignature(String signature) {
         if (signature == null) throw new AssertionError();
 
-        Log.d(TAG, "Saving the signature in preferences");
-        Preferences.putString(Preferences.SIGNATURE, signature);
-        Log.d(TAG, Preferences.getString(Preferences.SIGNATURE));
+        //Log.d(TAG, "Saving the signature in preferences");
+        //Preferences.putString(Preferences.SIGNATURE, signature);
+        //Log.d(TAG, Preferences.getString(Preferences.SIGNATURE));
 
-        Log.d(TAG, "Update the state for signature (SIGNATURE_GENERATED : true)"); // TODO : Fix by conversation
-        Preferences.putBoolean(Preferences.SIGNATURE_GENERATED, true);
+        //Log.d(TAG, "Update the state for signature (SIGNATURE_GENERATED : true)"); // TODO : Fix by conversation
+        //Preferences.putBoolean(Preferences.SIGNATURE_GENERATED, true);
 
         Log.d(TAG, "Saving the signature in firebase"); // TODO : Fix with Valentin
-        //User currentUser = AuthService.getInstance().getCurrentUser();
+        //Discussion currentDiscussion = DiscussionService.getInstance().getCurrentDiscussion();
         //UserService.getInstance().saveUserPublicKey(currentUser,
         //        Preferences.getString(Preferences.RSA_PUBLIC_KEY));
     }
@@ -181,7 +172,8 @@ public class CryptoService {
         if (!Preferences.getBoolean(Preferences.RSA_GENERATED)) {
             Log.d(TAG, "Generate and store RSA KeyPair");
             storeKeys(generateKeyPair());
-        } else {
+        }
+        else {
             Log.d(TAG, "Private key : " + Preferences.getString(Preferences.RSA_PRIVATE_KEY));
             Log.d(TAG, "Public key : " + Preferences.getString(Preferences.RSA_PUBLIC_KEY));
         }
@@ -193,7 +185,7 @@ public class CryptoService {
             generateAndStoreRSAKeys();
         }
 
-        if (!Preferences.getBoolean(Preferences.SIGNATURE_GENERATED)) {
+        if (!Preferences.getBoolean(Preferences.SIGNATURE_GENERATED)) { // TODO FIX FIREBASE
             Log.d(TAG, "Generate passphrase");
             String passphrase = null;
             try {
@@ -206,7 +198,7 @@ public class CryptoService {
             storeSignature(generateSignature(passphrase));
         }
         else {
-            Log.d(TAG, "Signature " + Preferences.getString(Preferences.SIGNATURE));
+            Log.d(TAG, "Signature " + Preferences.getString(Preferences.SIGNATURE)); // TODO FIX FIREBASE
         }
     }
 
@@ -232,7 +224,7 @@ public class CryptoService {
         }
     }
 
-    public static String encryptMessage(String message) {
+    public static String encryptRSAMessage(String message) {
         String encryptedMessage = null;
         try {
             encryptedMessage = RsaEcbService.encrypt(message, getPublicKey()); // TODO : Get Public key via Firebase
@@ -245,7 +237,7 @@ public class CryptoService {
         return encryptedMessage;
     }
 
-    public static String decryptMessage(String encryptedMessage) {
+    public static String decryptRSAMessage(String encryptedMessage) {
         String message = null;
         try {
             message = RsaEcbService.decrypt(encryptedMessage, getPrivateKey());

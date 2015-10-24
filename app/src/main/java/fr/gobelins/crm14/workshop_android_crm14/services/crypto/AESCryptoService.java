@@ -46,7 +46,14 @@ public class AESCryptoService {
         return salt;
     }
 
-    public static AesCbcWithIntegrity.CipherTextIvMac encryptAESMessage(String message, AesCbcWithIntegrity.SecretKeys keys) {
+    public static AesCbcWithIntegrity.CipherTextIvMac encryptAESMessage(String message) {
+        // generate salt
+        byte[] salt = getSalt();
+
+        // secret keys
+        AesCbcWithIntegrity.SecretKeys keys = getSecretKeys("PASSPHRASE", salt); // TODO :  GET PASSPHRASE WITH FIREBASE
+
+        // encrypt message
         AesCbcWithIntegrity.CipherTextIvMac encrypted = null;
         try {
             encrypted = AesCbcWithIntegrity.encrypt(message, keys);
@@ -56,14 +63,21 @@ public class AESCryptoService {
 
         if (encrypted != null)  throw new AssertionError();
 
-        Log.d(TAG, "Encrypted: " + encrypted.toString());
+        Log.d(TAG, "Encrypted: " + encrypted.toString()); // TODO : FIREBASE (SALT "Base64.toBase64String(salt)" + MESSAGE "encrypted.toString()")
         return encrypted;
     }
 
-    public static String decryptAESMessage(AesCbcWithIntegrity.CipherTextIvMac dataToDecrypt, AesCbcWithIntegrity.SecretKeys keysDecrypt) {
+    public static String decryptAESMessage(String encryptedMessage) {
+        // regenerate secret keys
+        AesCbcWithIntegrity.SecretKeys keys = getSecretKeys("PASSPHRASE", Base64.decode("SALT")); // TODO : GET PASSPHRASE WITH FIREBASE + GET PASSPHRASE WITH FIREBASE
+
+        // regenerate CipherTextIvMac
+        AesCbcWithIntegrity.CipherTextIvMac dataToDecrypt = new AesCbcWithIntegrity.CipherTextIvMac(encryptedMessage);
+
+        // decrypt message
         String decrypted = null;
         try {
-            decrypted = AesCbcWithIntegrity.decryptString(dataToDecrypt, keysDecrypt);
+            decrypted = AesCbcWithIntegrity.decryptString(dataToDecrypt, keys);
         } catch (UnsupportedEncodingException | GeneralSecurityException e) {
             e.printStackTrace();
         }

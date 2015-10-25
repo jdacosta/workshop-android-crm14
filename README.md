@@ -51,6 +51,8 @@ Nous avons réalisé plusieurs `services` pour faciliter le développement de no
 
 * La gestion du `Bundle` pour la restauration des données d'une activité *(utilisation du bouton retour Android)* n'est pas fonctionnel.
 
+* Plusieurs problèmes ont été rencontrés sur la gestion de la conversation (PB avec firebase sur le retour de requêtes, PB lors de l'initialisation de la conversation entre 2 contacts, plantage de l'application lors du changement de l'activité `Contact -> Discussion` et `Discussion -> Dashboard`...), du coup la discussion n'est pas fonctionnelle :(
+
 ### Ressources et liens
 
 * Github: https://github.com/jdacosta/workshop-android-crm14
